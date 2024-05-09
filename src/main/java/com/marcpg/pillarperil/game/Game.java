@@ -1,4 +1,4 @@
-package com.marcpg.pillarperil.mode;
+package com.marcpg.pillarperil.game;
 
 import com.marcpg.libpg.data.time.Time;
 import com.marcpg.libpg.util.Randomizer;
@@ -23,6 +23,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.OverridingMethodsMustInvokeSuper;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public abstract class Game {
@@ -32,20 +33,25 @@ public abstract class Game {
 
     protected final ScoreboardManager scoreboardManager = Bukkit.getScoreboardManager();
     protected final Time time = new Time(0);
-    protected final List<Player> initialPlayers;
     protected final Map<Player, AtomicInteger> players; // Just using AtomicInteger for features like incrementing.
     protected final Generator generator;
+    protected final List<ItemStack> items;
 
-    protected Game(@NotNull List<Player> players, @NotNull Generator generator) {
+    @SuppressWarnings("deprecation")
+    protected Game(@NotNull List<Player> players, @NotNull Generator generator, Predicate<Material> filter) {
         players.forEach(p -> {
             p.setGameMode(GameMode.SURVIVAL);
-            p.clearActivePotionEffects();
+            p.getActivePotionEffects().forEach(e -> p.removePotionEffect(e.getType()));
             p.getInventory().clear();
             p.setHealth(20.0);
         });
-        this.initialPlayers = players;
         this.players = new HashMap<>(players.stream().collect(Collectors.toMap(p -> p, p -> new AtomicInteger())));
         this.generator = generator;
+
+        this.items = Arrays.stream(Material.values())
+                .filter(m -> !m.isAir() && !m.isLegacy() && filter.test(m))
+                .map(ItemStack::new)
+                .toList();
 
         List<Location> pillars = generator.generate();
         for (int i = 0; i < pillars.size(); i++) {
@@ -71,7 +77,9 @@ public abstract class Game {
         return time.get() > 0 && time.get() % itemCooldown().get() == 0;
     }
 
-    public abstract List<ItemStack> items();
+    public List<ItemStack> items() {
+        return items;
+    }
 
     public abstract Time itemCooldown();
 
@@ -101,6 +109,17 @@ public abstract class Game {
                 player.showTitle(Title.title(Component.text(winner.getName() + " won!", NamedTextColor.GREEN), Component.text("With " + players.get(winner).get() + " points!", NamedTextColor.YELLOW)));
             }
         }
+        reset();
+    }
+
+    public void forceEnd() {
+        for (Player player : players.keySet()) {
+            player.showTitle(Title.title(Component.text("Game Forcefully Ended!", NamedTextColor.YELLOW), Component.text("It's forced, so there are no winners!", NamedTextColor.RED)));
+        }
+        reset();
+    }
+
+    private void reset() {
         if (this instanceof VisibleCooldownGame vtg) {
             players.keySet().forEach(vtg.bossBar::removeViewer);
         }
@@ -108,16 +127,11 @@ public abstract class Game {
         Bukkit.getScheduler().runTaskLater(PillarPeril.PLUGIN, () -> {
             generator.clear();
             for (Player player : players.keySet()) {
+                player.setScoreboard(scoreboardManager.getMainScoreboard());
                 player.setGameMode(GameMode.ADVENTURE);
                 player.teleport(player.getWorld().getSpawnLocation());
             }
         }, 100); // 5 Seconds
-    }
-
-    public void forceEnd() {
-        for (Player player : players.keySet()) {
-            player.showTitle(Title.title(Component.text("Game Forcefully Ended!", NamedTextColor.YELLOW), Component.text("It's forced, so there are no winners!", NamedTextColor.RED)));
-        }
     }
 
     public void onTick() {}
@@ -136,7 +150,7 @@ public abstract class Game {
         String timeLeft = timeLeft().getPreciselyFormatted();
         for (Map.Entry<Player, AtomicInteger> player : players.entrySet()) {
             Scoreboard scoreboard = scoreboardManager.getNewScoreboard();
-            Objective objective = scoreboard.registerNewObjective("game", Criteria.DUMMY, TITLE);
+            Objective objective = scoreboard.registerNewObjective("game", "dummy", TITLE);
             objective.setDisplaySlot(DisplaySlot.SIDEBAR);
             objective.getScore("§l§9Name: §r" + player.getKey().getName()).setScore(2);
             objective.getScore("§l§dTime: §r" + timeLeft).setScore(1);
@@ -147,7 +161,7 @@ public abstract class Game {
 
     @OverridingMethodsMustInvokeSuper
     public void onDeath(@NotNull PlayerDeathEvent event) {
-        Player player = event.getPlayer();
+        Player player = event.getEntity();
 
         player.setGameMode(GameMode.SPECTATOR);
 
@@ -174,6 +188,6 @@ public abstract class Game {
     }
 
     public static boolean hasUse(@NotNull Material m) {
-        return !(m.getHardness() < 0.05) || m == Material.TNT || m == Material.SLIME_BLOCK || m == Material.HONEY_BLOCK || m == Material.SCAFFOLDING || m == Material.DECORATED_POT;
+        return !(m.getHardness() < 0.05) || m == Material.TNT || m == Material.SLIME_BLOCK || m == Material.HONEY_BLOCK || m == Material.SCAFFOLDING;
     }
 }

@@ -31,7 +31,7 @@ public class RandomPillarGen extends Generator {
             Location loc = Randomizer.fromCollection(candidates);
             candidates.remove(loc);
             locations.add(loc);
-            placePillar(loc.getWorld(), loc.x(), loc.z());
+            placePillar(loc.getWorld(), loc.getX(), loc.getZ());
         }
 
         return locations;

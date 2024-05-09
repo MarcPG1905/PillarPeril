@@ -1,7 +1,7 @@
 package com.marcpg.pillarperil;
 
 import com.marcpg.libpg.text.Completer;
-import com.marcpg.pillarperil.mode.modes.*;
+import com.marcpg.pillarperil.game.modes.*;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -37,7 +37,7 @@ public class GameCommand implements TabExecutor {
                 case "info" -> {
                     sender.sendMessage(Component.text("Players in current match:").decorate(TextDecoration.BOLD));
                     for (Player player : PillarPeril.currentGame.players()) {
-                        sender.sendMessage(Component.text("- ", NamedTextColor.GRAY).append(player.name()));
+                        sender.sendMessage(Component.text("- ", NamedTextColor.GRAY).append(player.displayName()));
                     }
                 }
                 default -> { return false; }

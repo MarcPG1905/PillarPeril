@@ -5,8 +5,8 @@ plugins {
 }
 
 group = "com.marcpg"
-version = "0.0.1"
-description = "Funny game about long sticks and random events."
+version = "0.0.2"
+description = "Open-Source and Customizable version of CubeCraft's \"Pillars of Fortune\" game mode, but even better!"
 
 java.sourceCompatibility = JavaVersion.VERSION_17
 java.targetCompatibility = JavaVersion.VERSION_17
@@ -21,13 +21,17 @@ repositories {
 }
 
 dependencies {
-    implementation("com.marcpg:libpg:0.1.0")
-    compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
+    implementation("com.marcpg:libpg:0.1.1")
+    implementation("net.kyori:adventure-text-minimessage:4.16.0")
+    compileOnly("com.destroystokyo.paper:paper-api:1.16.5-R0.1-SNAPSHOT")
 }
 
 tasks {
     build {
         dependsOn(shadowJar)
+    }
+    shadowJar {
+        archiveClassifier = null
     }
     processResources {
         filter {

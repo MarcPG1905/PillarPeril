@@ -3,7 +3,6 @@ package com.marcpg.pillarperil.gen;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.joml.Math;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,8 +27,8 @@ public class CircularPillarGen extends Generator {
 
         for (int i = 0; i < players; i++) {
             double angle = TAU * i / players;
-            double x = center.x() + radius * Math.cos(angle);
-            double z = center.z() + radius * Math.sin(angle);
+            double x = center.getX() + radius * Math.cos(angle);
+            double z = center.getZ() + radius * Math.sin(angle);
             placePillar(world, x, z);
             locations.add(new Location(world, x, 200, z));
         }

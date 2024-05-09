@@ -1,6 +1,6 @@
 package com.marcpg.pillarperil;
 
-import com.marcpg.pillarperil.mode.Game;
+import com.marcpg.pillarperil.game.Game;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Objects;

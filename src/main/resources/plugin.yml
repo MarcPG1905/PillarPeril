@@ -2,7 +2,7 @@
 name: PillarPeril
 
 ### Plugin Description ###
-description: Funny game about long sticks and random events.
+description: Open-Source and Customizable version of CubeCraft's "Pillars of Fortune" game mode, but even better!
 
 ### Build Version ###
 version: '${version}'
@@ -11,7 +11,7 @@ version: '${version}'
 main: com.marcpg.pillarperil.PillarPeril
 
 ### PaperAPI Version ###
-api-version: '1.20'
+api-version: '1.16'
 
 ### Developers of the Plugin ###
 authors:

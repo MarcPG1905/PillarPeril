@@ -1,19 +1,21 @@
-package com.marcpg.pillarperil.mode;
+package com.marcpg.pillarperil.game;
 
 import com.marcpg.libpg.data.time.Time;
 import com.marcpg.pillarperil.gen.Generator;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 public abstract class VisibleCooldownGame extends Game {
     protected final BossBar bossBar = BossBar.bossBar(Component.empty(), 0.0f, BossBar.Color.RED, BossBar.Overlay.PROGRESS);
 
-    protected VisibleCooldownGame(@NotNull List<Player> players, Generator generator) {
-        super(players, generator);
+    protected VisibleCooldownGame(@NotNull List<Player> players, Generator generator, Predicate<Material> filter) {
+        super(players, generator, filter);
         players.forEach(bossBar::addViewer);
     }
 

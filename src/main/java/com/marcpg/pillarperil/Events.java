@@ -1,7 +1,7 @@
 package com.marcpg.pillarperil;
 
 import com.destroystokyo.paper.event.server.ServerTickEndEvent;
-import com.marcpg.pillarperil.mode.modes.ChaosMode;
+import com.marcpg.pillarperil.game.modes.ChaosMode;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
