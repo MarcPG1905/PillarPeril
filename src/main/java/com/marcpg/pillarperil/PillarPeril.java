@@ -1,31 +1,38 @@
 package com.marcpg.pillarperil;
 
+import com.marcpg.pillarperil.event.GameEvents;
 import com.marcpg.pillarperil.game.Game;
+import com.marcpg.pillarperil.game.util.GameManager;
+import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.slf4j.Logger;
 
-import java.util.Objects;
-import java.util.logging.Logger;
+import java.util.List;
 
-public final class PillarPeril extends JavaPlugin {
-    public static JavaPlugin PLUGIN;
+@SuppressWarnings("UnstableApiUsage")
+public class PillarPeril extends JavaPlugin {
+    public static PillarPeril PLUGIN;
     public static Logger LOG;
-    public static Game currentGame;
+    public static FileConfiguration CONFIG;
 
     @Override
     public void onEnable() {
+        saveDefaultConfig();
+
         PLUGIN = this;
-        LOG = getLogger();
-        Objects.requireNonNull(getCommand("game")).setExecutor(new GameCommand());
-        getServer().getPluginManager().registerEvents(new Events(), this);
-        LOG.info("Started Pillar Peril!");
+        LOG = getSLF4JLogger();
+        CONFIG = getConfig();
+
+        getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, event -> {
+            event.registrar().register(Commands.games(), "Utilities for managing the Pillar Peril games or starting new ones.", List.of("pillarperil", "matches", "game-manager"));
+        });
+
+        getServer().getPluginManager().registerEvents(new GameEvents(), this);
     }
 
     @Override
     public void onDisable() {
-        if (currentGame != null) {
-            LOG.warning("Forcefully stopping the current game!");
-            currentGame.forceEnd();
-        }
-        LOG.info("Stopped Pillar Peril!");
+        GameManager.GAMES.forEach(game -> game.end(Game.EndingCause.FORCE, List.of()));
     }
 }

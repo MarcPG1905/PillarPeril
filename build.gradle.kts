@@ -1,15 +1,15 @@
 plugins {
     id("java")
-    id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("io.github.goooler.shadow") version "8.1.8"
     id("xyz.jpenilla.run-paper") version "2.2.3"
 }
 
-group = "com.marcpg"
-version = "0.0.2"
+group = "com.marcpg.pillarperil"
+version = "0.1.0"
 description = "Open-Source and Customizable version of CubeCraft's \"Pillars of Fortune\" game mode, but even better!"
 
-java.sourceCompatibility = JavaVersion.VERSION_17
-java.targetCompatibility = JavaVersion.VERSION_17
+java.sourceCompatibility = JavaVersion.VERSION_21
+java.targetCompatibility = JavaVersion.VERSION_21
 
 repositories {
     mavenLocal()
@@ -21,24 +21,28 @@ repositories {
 }
 
 dependencies {
+    compileOnly("io.papermc.paper:paper-api:1.21-R0.1-SNAPSHOT")
     implementation("com.marcpg:libpg:0.1.1")
-    implementation("net.kyori:adventure-text-minimessage:4.16.0")
-    compileOnly("com.destroystokyo.paper:paper-api:1.16.5-R0.1-SNAPSHOT")
 }
 
 tasks {
     build {
         dependsOn(shadowJar)
     }
+    runServer {
+        dependsOn(shadowJar)
+        minecraftVersion("1.21")
+    }
     shadowJar {
-        archiveClassifier = null
+        archiveClassifier.set("")
+        manifest {
+            // This is just so paper won't remap the plugin.
+            attributes["paperweight-mappings-namespace"] = "mojang"
+        }
     }
     processResources {
         filter {
             it.replace("\${version}", version.toString())
         }
-    }
-    runServer {
-        minecraftVersion("1.20.4")
     }
 }

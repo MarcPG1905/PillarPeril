@@ -11,7 +11,7 @@ version: '${version}'
 main: com.marcpg.pillarperil.PillarPeril
 
 ### PaperAPI Version ###
-api-version: '1.16'
+api-version: '1.21'
 
 ### Developers of the Plugin ###
 authors:
@@ -22,13 +22,3 @@ website: https://marcpg.com/pillar-peril
 
 ### Plugin Prefix ###
 prefix: PP
-
-### All Commands ###
-commands:
-  ## Does stuff with the current PillarPeril™ game ##
-  game:
-    usage: /<command> <start|stop|info>
-    aliases: match
-    description: Interacts with the current match.
-    permission: pillarperil.game
-    permission-message: Only administrators can interact with the game!
