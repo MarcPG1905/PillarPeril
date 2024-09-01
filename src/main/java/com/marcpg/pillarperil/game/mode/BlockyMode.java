@@ -1,11 +1,8 @@
 package com.marcpg.pillarperil.game.mode;
 
-import com.marcpg.libpg.data.time.Time;
 import com.marcpg.libpg.util.Randomizer;
 import com.marcpg.pillarperil.game.Game;
 import com.marcpg.pillarperil.game.util.GameInfo;
-import com.marcpg.pillarperil.generation.CircularPillarGen;
-import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -24,7 +21,7 @@ public class BlockyMode extends Game {
             STONE_SHOVEL,   IRON_SHOVEL,    GOLDEN_SHOVEL,  DIAMOND_SHOVEL,     NETHERITE_SHOVEL
     );
 
-    private static final GameInfo INFO = new GameInfo("Blocky", 10, new Time(4, Time.Unit.MINUTES), NamedTextColor.GOLD, CircularPillarGen.class, m -> m.isBlock() && hasUse(m));
+    private static final GameInfo INFO = new GameInfo("Blocky", "blocky", m -> m.isBlock() && hasUse(m));
 
     public BlockyMode(@NotNull Location center, int startTick, @NotNull List<Player> players) {
         super(center, startTick, players);

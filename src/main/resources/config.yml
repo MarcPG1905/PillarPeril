@@ -1,0 +1,72 @@
+#################################################################################
+##                  ____  _ _ _            ____           _ _                  ##
+##_________________|  _ \(_) | | __ _ _ __|  _ \ ___ _ __(_) |_________________##
+##_________________| |_) | | | |/ _` | '__| |_) / _ \ '__| | |_________________##
+##_________________|  __/| | | | (_| | |  |  __/  __/ |  | | |_________________##
+##_________________|_|   |_|_|_|\__,_|_|  |_|   \___|_|  |_|_|_________________##
+##                                Configuration                                ##
+##                                                                             ##
+##       WEBSITE:       https://marcpg.com/pillar-peril                        ##
+##       SOURCE-CODE:   https://github.com/MarcPG1905/PillarPeril              ##
+##       BUGS & ISSUES: https://github.com/MarcPG1905/PillarPeril/issues       ##
+##                                                                             ##
+#################################################################################
+
+
+## Pillar Height ##
+# The y-coordinate that the bedrock pillars will raise to.
+# Default: 200
+pillar-height: 200
+
+
+## Max Fall Distance ##
+# The maximum distance you can fall from the pillars until you die.
+# This number will be extracted from the pillar height to determine the y-coordinate you die at.
+# Default: 25
+max-fall: 25
+
+
+## Pillar Distance Factor ##
+# The factor of the distance between pillars. This is used to determine the radius of the pillar field.
+# Default: 10.0
+pillar-distance-factor: 10.0
+
+
+## Default Game Modes ##
+# Allows you to configure various properties of the default game modes.
+modes:
+
+  # Blocky Mode - Gives you a weapon at the start, but you only get blocks randomly.
+  blocky:
+    cooldown: 10
+    time-limit: 4min
+    color: "#FFAA00"
+    generator: circular
+
+  # Chaos Mode - No item filters, pillars are randomized and the item cooldown is very low.
+  chaos:
+    cooldown: 3
+    time-limit: 8min
+    color: "#FF5555"
+    generator: random
+
+  # CubeCraft Mode - Game mode with the same rules and properties as CubeCraft's "Pillars of Fortune".
+  cubecraft:
+    cooldown: 5
+    time-limit: 5min
+    color: "#53A4FF"
+    generator: circular
+
+  # Item-Only Mode - You only get items and no blocks, which makes the game very long and hard.
+  item-only:
+    cooldown: 10
+    time-limit: 10min
+    color: "#FFFF55"
+    generator: circular
+
+  # Original Mode - The original mode as seen in CheapPickle's videos.
+  original:
+    cooldown: 5
+    time-limit: 5min
+    color: "#FFFFFF"
+    generator: circular

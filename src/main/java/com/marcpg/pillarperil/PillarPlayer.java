@@ -1,4 +1,4 @@
-package com.marcpg.pillarperil.player;
+package com.marcpg.pillarperil;
 
 import com.marcpg.libpg.util.Randomizer;
 import com.marcpg.pillarperil.game.Game;
@@ -76,12 +76,6 @@ public class PillarPlayer implements ForwardingAudience.Single {
     @Override
     public @NotNull Audience audience() {
         return player;
-    }
-
-    public List<PillarPlayer> opponents(boolean onlyAlive) {
-        return (onlyAlive ? game.players() : game.initialPlayers()).stream()
-                .filter(p -> p != this)
-                .toList();
     }
 
     public Locale locale() {

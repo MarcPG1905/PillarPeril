@@ -1,8 +1,10 @@
 package com.marcpg.pillarperil;
 
 import com.marcpg.pillarperil.event.GameEvents;
+import com.marcpg.pillarperil.event.PlayerEvents;
 import com.marcpg.pillarperil.game.Game;
 import com.marcpg.pillarperil.game.util.GameManager;
+import com.marcpg.pillarperil.generation.Generator;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -29,6 +31,11 @@ public class PillarPeril extends JavaPlugin {
         });
 
         getServer().getPluginManager().registerEvents(new GameEvents(), this);
+        getServer().getPluginManager().registerEvents(new PlayerEvents(), this);
+
+        Generator.pillarHeight = CONFIG.getInt("pillar-height");
+        Generator.deathHeight = Generator.pillarHeight - CONFIG.getInt("max-fall");
+        Generator.pillarDistanceFactor = CONFIG.getDouble("pillar-distance-factor");
     }
 
     @Override

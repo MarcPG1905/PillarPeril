@@ -2,11 +2,11 @@ package com.marcpg.pillarperil.game;
 
 import com.marcpg.libpg.data.time.Time;
 import com.marcpg.libpg.util.Randomizer;
-import com.marcpg.pillarperil.Config;
 import com.marcpg.pillarperil.PillarPeril;
+import com.marcpg.pillarperil.PillarPlayer;
 import com.marcpg.pillarperil.game.util.GameInfo;
 import com.marcpg.pillarperil.game.util.GameManager;
-import com.marcpg.pillarperil.player.PillarPlayer;
+import com.marcpg.pillarperil.generation.Generator;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -38,14 +38,14 @@ public abstract class Game {
     protected List<Material> items;
 
     protected long itemCooldown = info().itemCooldown();
-    protected Time timeLeft = new Time(info().timeLimit());
+    protected final Time timeLeft = new Time(info().timeLimit());
 
     protected final Style keyStyle = Style.style(info().accentColor(), TextDecoration.BOLD);
     protected final Style valueStyle = Style.style(NamedTextColor.WHITE, TextDecoration.BOLD.withState(false));
 
     public Game(@NotNull Location center, int startTick, @NotNull List<Player> players) {
         this.center = center.clone();
-        this.center.setY(Config.pillarHeight + 1);
+        this.center.setY(Generator.pillarHeight + 1);
 
         this.world = center.getWorld();
         this.startTick = startTick;
@@ -128,8 +128,10 @@ public abstract class Game {
 
     @OverridingMethodsMustInvokeSuper
     public void tick(int tick) {
-        if (tick - startTick % 20 == 0) {
-            tickSecond();
+        if (tick - startTick % 10 == 0) {
+            players.forEach(PillarPlayer::tick);
+            if (tick - startTick % 20 == 0)
+                tickSecond();
         }
     }
 
@@ -170,6 +172,6 @@ public abstract class Game {
     }
 
     public static boolean hasUse(@NotNull Material m) {
-        return m.getHardness() >= 0.05 || m == Material.TNT || m == Material.SLIME_BLOCK || m == Material.HONEY_BLOCK || m == Material.SCAFFOLDING;
+        return m.isSolid();
     }
 }

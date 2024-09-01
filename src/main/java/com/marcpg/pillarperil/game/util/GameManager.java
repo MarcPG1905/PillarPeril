@@ -1,7 +1,7 @@
 package com.marcpg.pillarperil.game.util;
 
+import com.marcpg.pillarperil.PillarPlayer;
 import com.marcpg.pillarperil.game.Game;
-import com.marcpg.pillarperil.player.PillarPlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
