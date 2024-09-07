@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class ItemOnlyMode extends Game {
-    private static final GameInfo INFO = new GameInfo("Item-Only", "item-only", Material::isItem);
+    private static final GameInfo INFO = new GameInfo("item-only", Material::isItem);
 
     public ItemOnlyMode(@NotNull Location center, int startTick, @NotNull List<Player> players) {
         super(center, startTick, players);

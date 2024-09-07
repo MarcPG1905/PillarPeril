@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class OriginalMode extends BossBarGame {
-    private static final GameInfo INFO = new GameInfo("Original", "original", m -> true);
+    private static final GameInfo INFO = new GameInfo("original", m -> true);
 
     public OriginalMode(@NotNull Location center, int startTick, @NotNull List<Player> players) {
         super(center, startTick, players);

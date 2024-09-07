@@ -1,7 +1,9 @@
-package com.marcpg.pillarperil.generation;
+package com.marcpg.pillarperil.generation.generator;
 
 import com.marcpg.libpg.util.Randomizer;
 import com.marcpg.pillarperil.game.Game;
+import com.marcpg.pillarperil.generation.Generator;
+import com.marcpg.pillarperil.generation.Platform;
 import org.bukkit.Location;
 
 import java.util.ArrayList;
@@ -16,7 +18,7 @@ public class RandomPillarGen extends Generator {
 
     @Override
     public List<Location> generate() {
-        double radius = players * pillarDistanceFactor / TAU * 1.2;
+        double radius = players * platformDistanceFactor / Math.TAU * 1.2;
         Set<Location> candidates = new HashSet<>();
 
         for (int x = (int) -radius; x <= radius; x++) {
@@ -32,8 +34,8 @@ public class RandomPillarGen extends Generator {
         for (int i = 0; i < players; i++) {
             Location loc = Randomizer.fromCollection(candidates);
             candidates.remove(loc);
-            locations.add(loc);
-            placePillar(loc.getX(), loc.getZ());
+            locations.add(new Location(game.world, loc.x(), Platform.platformHeight + 1, loc.z()));
+            platform.place(loc.getX(), loc.getZ());
         }
         return locations;
     }

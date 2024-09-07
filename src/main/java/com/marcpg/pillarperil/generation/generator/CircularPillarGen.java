@@ -1,6 +1,8 @@
-package com.marcpg.pillarperil.generation;
+package com.marcpg.pillarperil.generation.generator;
 
 import com.marcpg.pillarperil.game.Game;
+import com.marcpg.pillarperil.generation.Generator;
+import com.marcpg.pillarperil.generation.Platform;
 import org.bukkit.Location;
 
 import java.util.ArrayList;
@@ -14,14 +16,14 @@ public class CircularPillarGen extends Generator {
     @Override
     public List<Location> generate() {
         List<Location> locations = new ArrayList<>();
-        double radius = players * pillarDistanceFactor / TAU;
+        double radius = players * platformDistanceFactor / Math.TAU;
 
         for (int i = 0; i < players; i++) {
-            double angle = TAU * i / players;
+            double angle = Math.TAU * i / players;
             double x = center.x() + radius * Math.cos(angle);
             double z = center.z() + radius * Math.sin(angle);
-            placePillar(x, z);
-            locations.add(new Location(game.world, x, Generator.pillarHeight + 1, z));
+            platform.place(x, z);
+            locations.add(new Location(game.world, x, Platform.platformHeight + 1, z));
         }
         return locations;
     }

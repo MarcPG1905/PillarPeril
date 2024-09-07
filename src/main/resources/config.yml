@@ -16,7 +16,7 @@
 ## Pillar Height ##
 # The y-coordinate that the bedrock pillars will raise to.
 # Default: 200
-pillar-height: 200
+platform-height: 200
 
 
 ## Max Fall Distance ##
@@ -29,19 +29,28 @@ max-fall: 25
 ## Pillar Distance Factor ##
 # The factor of the distance between pillars. This is used to determine the radius of the pillar field.
 # Default: 10.0
-pillar-distance-factor: 10.0
+platform-distance-factor: 10.0
 
 
 ## Default Game Modes ##
 # Allows you to configure various properties of the default game modes.
 modes:
 
-  # Blocky Mode - Gives you a weapon at the start, but you only get blocks randomly.
+  # Example Mode - Example mode to explain what each value does.
+  example:
+    cooldown: 5 # The cooldown (in seconds) between receiving an item.
+    time-limit: 5min # The total amount of time a game can last. Please only use one time unit.
+    color: "#FFFFFF" # The theme color (as hex code) of the game. Will be used in the scoreboard for example.
+    generator: circular # The generator type that will place all pillars/blocks. Either "circular" or "random".
+    platforms: pillars # The type of platform to spawn. Either "pillars" or "blocks".
+
+  # Blocky Mode - Gives you a random weapon at the start, but you only get blocks randomly.
   blocky:
     cooldown: 10
     time-limit: 4min
     color: "#FFAA00"
     generator: circular
+    platforms: pillars
 
   # Chaos Mode - No item filters, pillars are randomized and the item cooldown is very low.
   chaos:
@@ -49,6 +58,7 @@ modes:
     time-limit: 8min
     color: "#FF5555"
     generator: random
+    platforms: pillars
 
   # CubeCraft Mode - Game mode with the same rules and properties as CubeCraft's "Pillars of Fortune".
   cubecraft:
@@ -56,6 +66,7 @@ modes:
     time-limit: 5min
     color: "#53A4FF"
     generator: circular
+    platforms: pillars
 
   # Item-Only Mode - You only get items and no blocks, which makes the game very long and hard.
   item-only:
@@ -63,6 +74,7 @@ modes:
     time-limit: 10min
     color: "#FFFF55"
     generator: circular
+    platforms: pillars
 
   # Original Mode - The original mode as seen in CheapPickle's videos.
   original:
@@ -70,3 +82,4 @@ modes:
     time-limit: 5min
     color: "#FFFFFF"
     generator: circular
+    platforms: pillars

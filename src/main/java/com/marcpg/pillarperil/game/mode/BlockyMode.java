@@ -21,7 +21,7 @@ public class BlockyMode extends Game {
             STONE_SHOVEL,   IRON_SHOVEL,    GOLDEN_SHOVEL,  DIAMOND_SHOVEL,     NETHERITE_SHOVEL
     );
 
-    private static final GameInfo INFO = new GameInfo("Blocky", "blocky", m -> m.isBlock() && hasUse(m));
+    private static final GameInfo INFO = new GameInfo("blocky", m -> m.isBlock() && hasUse(m));
 
     public BlockyMode(@NotNull Location center, int startTick, @NotNull List<Player> players) {
         super(center, startTick, players);

@@ -3,7 +3,7 @@ package com.marcpg.pillarperil.event;
 import com.marcpg.pillarperil.PillarPlayer;
 import com.marcpg.pillarperil.game.Game;
 import com.marcpg.pillarperil.game.util.GameManager;
-import com.marcpg.pillarperil.generation.Generator;
+import com.marcpg.pillarperil.generation.Platform;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -26,7 +26,7 @@ public class PlayerEvents implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerMove(@NotNull PlayerMoveEvent event) {
-        if (event.getTo().y() < Generator.deathHeight) {
+        if (event.getTo().y() < Platform.deathHeight) {
             Game game = GameManager.game(event.getPlayer(), true);
             if (game != null)
                 event.getPlayer().setHealth(0.0);

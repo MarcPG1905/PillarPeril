@@ -2,35 +2,28 @@ package com.marcpg.pillarperil.generation;
 
 import com.marcpg.pillarperil.game.Game;
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public abstract class Generator {
-    public static final double TAU = 6.28318530717958647692;
-
-    public static int pillarHeight = 200;
-    public static int deathHeight = 175;
-    public static double pillarDistanceFactor = 10.0;
+    public static double platformDistanceFactor = 10.0;
 
     protected final Game game;
     protected final Location center;
     protected final int players;
+    protected final Platform platform;
 
-    public Generator(Game game, Location center, int players) {
+    public Generator(@NotNull Game game, Location center, int players) {
         this.game = game;
         this.center = center;
         this.players = players;
+        try {
+            this.platform = game.info().platforms().getConstructor(Game.class, Generator.class).newInstance(game, this);
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public abstract List<Location> generate();
-
-    protected void placePillar(double x, double z) {
-        for (int y = 0; y < Generator.pillarHeight; y++) {
-            Block block = new Location(game.world, x, y, z).getBlock();
-            game.addBlock(block.getLocation(), block.getBlockData());
-            block.setType(Material.BEDROCK);
-        }
-    }
 }

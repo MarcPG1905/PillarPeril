@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class CubeCraftMode extends Game {
-    private static final GameInfo INFO = new GameInfo("CubeCraft", "cubecraft", m -> !m.name().contains("BOAT") && hasUse(m));
+    private static final GameInfo INFO = new GameInfo("cubecraft", m -> !m.name().contains("BOAT") && hasUse(m));
 
     public CubeCraftMode(@NotNull Location center, int startTick, @NotNull List<Player> players) {
         super(center, startTick, players);
