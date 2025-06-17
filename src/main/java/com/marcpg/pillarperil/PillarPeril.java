@@ -18,13 +18,13 @@ import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Properties;
 
 @SuppressWarnings("UnstableApiUsage")
 public class PillarPeril extends JavaPlugin {
@@ -63,10 +63,18 @@ public class PillarPeril extends JavaPlugin {
         List.copyOf(GameManager.GAMES).forEach(game -> game.end(Game.EndingCause.FORCE, List.of()));
     }
 
-    void translations() throws URISyntaxException, IOException, InterruptedException {
-        HttpRequest request = HttpRequest.newBuilder(new URI("https://marcpg.com/pillar-peril/lang/all")).GET().build();
-        String response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString()).body();
-        Translation.loadMaps(new Gson().fromJson(response, new TypeToken<Map<Locale, Map<String, String>>>(){}.getType()));
+    void translations() throws IOException {
+        try {
+            HttpRequest request = HttpRequest.newBuilder(new URI("https://marcpg.com/pillar-peril/lang/all")).GET().build();
+            String response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString()).body();
+            Translation.loadMaps(new Gson().fromJson(response, new TypeToken<Map<Locale, Map<String, String>>>(){}.getType()));
+        } catch (Exception e) {
+            LOG.error("Could not retrieve translations from https://marcpg.com/pillar-peril/lang/all - PillarPeril will continue to work as usual, just without non-english translations.");
+
+            Properties properties = new Properties();
+            properties.load(this.getClassLoader().getResourceAsStream("en_US.properties"));
+            Translation.loadSingleProperties(Locale.getDefault(), properties);
+        }
     }
 
     public static Locale locale(Audience a) {

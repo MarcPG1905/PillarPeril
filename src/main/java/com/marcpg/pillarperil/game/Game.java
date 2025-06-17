@@ -61,8 +61,9 @@ public abstract class Game {
                 .forEach(this.players::add);
 
         this.initialAudience = Audience.audience(initialPlayers);
+        //noinspection removal
         this.items = Arrays.stream(Material.values())
-                .filter(m -> !m.isEmpty() && !m.isLegacy() && m.isItem() && m.isEnabledByFeature(world) && info().filter().test(m))
+                .filter(m -> !m.isAir() && !m.isLegacy() && m.isItem() && m.isEnabledByFeature(world) && info().filter().test(m))
                 .toList();
 
         try {
