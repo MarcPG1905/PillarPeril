@@ -1,48 +1,52 @@
 plugins {
     id("java")
-    id("io.github.goooler.shadow") version "8.1.8"
-    id("xyz.jpenilla.run-paper") version "2.2.3"
+
+    kotlin("jvm") version "2.2.0"
+
+    id("com.gradleup.shadow") version "8.3.8"
+    id("xyz.jpenilla.run-paper") version "2.3.1"
+    id("io.papermc.paperweight.userdev") version "2.0.0-beta.18"
 }
 
 group = "com.marcpg.pillarperil"
 version = "0.1.0"
 description = "Open-Source and Customizable version of CubeCraft's \"Pillars of Fortune\" game mode, but even better!"
 
-java.sourceCompatibility = JavaVersion.VERSION_21
-java.targetCompatibility = JavaVersion.VERSION_21
+kotlin {
+    jvmToolchain(21)
+}
 
 repositories {
-    mavenLocal()
     mavenCentral()
 
-    maven("https://marcpg.com/repo/")
-    maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
     maven("https://repo.papermc.io/repository/maven-public/")
+    maven("https://repo.xenondevs.xyz/releases/")
+    maven("https://marcpg.com/repo/")
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.21.5-R0.1-SNAPSHOT")
-    implementation("com.marcpg:libpg:0.1.3")
+    paperweight.paperDevBundle("1.21.4-R0.1-SNAPSHOT")
+
+    implementation(files("libs/ktlibpg-platform-brigadier-2.0.0.jar"))
+    implementation(files("libs/ktlibpg-platform-adventure-2.0.0.jar"))
+    implementation(files("libs/ktlibpg-platform-paper-2.0.0.jar"))
+
+    compileOnly(kotlin("stdlib"))
+    compileOnly(kotlin("reflect"))
 }
 
 tasks {
+    reobfJar {
+        dependsOn(jar)
+    }
     build {
-        dependsOn(shadowJar)
+        dependsOn(shadowJar, reobfJar)
     }
     runServer {
         dependsOn(shadowJar)
-        minecraftVersion("1.21.1")
+        minecraftVersion("1.21.8")
     }
     shadowJar {
         archiveClassifier.set("")
-        manifest {
-            // This is just so paper won't remap the plugin.
-            attributes["paperweight-mappings-namespace"] = "mojang"
-        }
-    }
-    processResources {
-        filter {
-            it.replace("\${version}", version.toString())
-        }
     }
 }
