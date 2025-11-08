@@ -5,10 +5,13 @@ name: PillarPeril
 description: Open-Source and Customizable version of CubeCraft's "Pillars of Fortune" game mode, but even better!
 
 ### Build Version ###
-version: 0.1.0
+version: 0.2.0
 
 ### Main Class ###
 main: com.marcpg.pillarperil.PillarPeril
+
+### Loader Class ###
+loader: com.marcpg.pillarperil.PPLoader
 
 ### PaperAPI Version ###
 api-version: '1.21'

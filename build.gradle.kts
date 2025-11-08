@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "com.marcpg.pillarperil"
-version = "0.1.0"
+version = "0.2.0"
 description = "Open-Source and Customizable version of CubeCraft's \"Pillars of Fortune\" game mode, but even better!"
 
 kotlin {
