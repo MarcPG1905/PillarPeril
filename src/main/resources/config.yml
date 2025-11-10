@@ -32,6 +32,111 @@ max-fall: 25
 platform-distance-factor: 10.0
 
 
+## Enable Draws ##
+# Whether draws can happen or not, which will happen among the last players if they all die within one second,
+# which almost always means they all fell off the platform at almost the same time.
+# Default: false
+enable-draws: false
+
+# An ordered list of commands to execute after a game ended.
+# This, unlike `queue.pre-commands` and `queue.post-commands`, will execute even if the queue is disabled.
+#   Available Placeholders:
+#     | -> '{id}'       : started game's ID
+#     | -> '{mode}'     : started game's game-mode
+#     | -> '{players}'  : amount of players in the started game
+#     | -> '{world}'    : name of the game's world
+#     | -> '{x}'        : the game's center location's x-component
+#     | -> '{y}'        : the game's center location's y-component
+#     | -> '{z}'        : the game's center location's z-component
+#     | -> '{cause}'    : the cause for the game ending, in snake_case
+ending-commands:
+  - "/say Ending game with cause {cause}..." # <- example, you can freely remove this and leave the list empty.
+
+
+## Respawn at Config ##
+# Whether to respawn players at the configured `player-spawn` below instead of making them spectate.
+# If spectating (=false), it will spawn players in spectator mode in the middle of the game.
+# Default: false
+respawn-at-config: false
+
+
+## Player Spawn ##
+# Where and how to spawn players after the game ends.
+# If above value is set to true, players will also spawn here when dying.
+player-spawn:
+
+  # The game mode to set players to when spawning here.
+  game-mode: adventure
+
+  # The world to spawn in. The default world is called "world".
+  world: world
+
+  # The location to spawn the player at.
+  # If the y-component is set to -64.0, the player will spawn at the world spawn.
+  location: [ 0.0, -64.0, 0.0 ]
+
+
+## Queue ##
+# The optional queue module for automatically starting games when enough players joined.
+queue:
+
+  # Whether the queue module is enabled or not.
+  enabled: false
+
+  # The minimum amount of players needed to start a game.
+  min-players: 3
+
+  # The maximum amount of players before splitting the queue.
+  max-players: 16
+
+  # The interval in seconds between checking if the amount of player is valid and starting a game.
+  # Set to -1 to start instantly as soon as `min-players` queued.
+  check-interval: 30
+
+  # How players enter or leave the queue.
+  #   Available Methods:
+  #     | -> command  : use '/queue' to enter the queue
+  #     | -> auto     : anyone not in a game is automatically in the queue
+  method: command
+
+  # The game mode to use when starting a new game using the queue.
+  # See below ('modes' section) for list of available game modes.
+  mode: original
+
+  # The world to start the game in.
+  #   Available Placeholders:
+  #     | -> '{id}'       : started game's ID
+  #     | -> '{mode}'     : started game's game-mode
+  #     | -> '{players}'  : amount of players in the started game
+  world: "game-{id}"
+
+  # The location to start the game at.
+  # If the y-component is set to -64.0, the game will start at the world spawn.
+  location: [ 0.0, -64.0, 0.0 ]
+
+  # An ordered list of commands to execute before any world or location is accessed.
+  # This should only really be used to create a world for the game when using another plugin like MultiVerse.
+  #   Available Placeholders:
+  #     | -> '{id}'       : started game's ID
+  #     | -> '{mode}'     : started game's game-mode
+  #     | -> '{players}'  : amount of players in the started game
+  pre-commands:
+    - "/say Initializing game with {players} players..." # <- example, you can freely remove this and leave the list empty.
+
+  # An ordered list of commands to execute after the world and location of the game were accessed.
+  # Things like creating a world for the game cannot happen here anymore.
+  #   Available Placeholders:
+  #     | -> '{id}'       : started game's ID
+  #     | -> '{mode}'     : started game's game-mode
+  #     | -> '{players}'  : amount of players in the started game
+  #     | -> '{world}'    : name of the game's world
+  #     | -> '{x}'        : the game's center location's x-component
+  #     | -> '{y}'        : the game's center location's y-component
+  #     | -> '{z}'        : the game's center location's z-component
+  post-commands:
+    - "/say Starting game at {x}/{y}/{z}..." # <- example, you can freely remove this and leave the list empty.
+
+
 ## Default Game Modes ##
 # Allows you to configure various properties of the default game modes.
 modes:
@@ -40,46 +145,107 @@ modes:
   example:
     cooldown: 5 # The cooldown (in seconds) between receiving an item.
     time-limit: 5min # The total amount of time a game can last. Please only use one time unit.
-    color: "#FFFFFF" # The theme color (as hex code) of the game. Will be used in the scoreboard for example.
-    generator: circular # The generator type that will place all pillars/blocks. Either "circular" or "random".
-    platforms: pillars # The type of platform to spawn. Either "pillars" or "blocks".
+    visual:
+      color: "#FFFFFF" # The theme color (as hex code) of the game. Will be used in the scoreboard for example.
+      show-scoreboard: true # Whether to show a scoreboard with some info or not.
+      show-actionbar: false # Whether to show an actionbar with the the item countdown or not.
+      show-bossbar: false # Whether to show a bossbar with the item countdown or not.
+    generator:
+      horizontal: circular # The horizontal generator, so the layout of vertical pillars/blocks. Either "circular" or "random".
+      vertical: pillar # The vertical generator, so the type of platform. Either "pillar" or "block".
 
   # Blocky Mode - Gives you a random weapon at the start, but you only get blocks randomly.
   blocky:
     cooldown: 10
     time-limit: 4min
-    color: "#FFAA00"
-    generator: circular
-    platforms: pillars
+    visual:
+      color: "#FFAA00"
+      show-scoreboard: true
+      show-actionbar: false
+      show-bossbar: false
+    generator:
+      horizontal: circular
+      vertical: pillar
 
   # Chaos Mode - No item filters, pillars are randomized and the item cooldown is very low.
   chaos:
     cooldown: 3
     time-limit: 8min
-    color: "#FF5555"
-    generator: random
-    platforms: pillars
+    visual:
+      color: "#FF5555"
+      show-scoreboard: true
+      show-actionbar: false
+      show-bossbar: true
+    generator:
+      horizontal: random
+      vertical: pillar
 
   # CubeCraft Mode - Game mode with the same rules and properties as CubeCraft's "Pillars of Fortune".
   cubecraft:
     cooldown: 5
     time-limit: 5min
-    color: "#53A4FF"
-    generator: circular
-    platforms: pillars
+    visual:
+      color: "#53A4FF"
+      show-scoreboard: true
+      show-actionbar: false
+      show-bossbar: false
+    generator:
+      horizontal: circular
+      vertical: pillar
 
   # Item-Only Mode - You only get items and no blocks, which makes the game very long and hard.
   item-only:
     cooldown: 10
     time-limit: 10min
-    color: "#FFFF55"
-    generator: circular
-    platforms: pillars
+    visual:
+      color: "#FFFF55"
+      show-scoreboard: true
+      show-actionbar: false
+      show-bossbar: false
+    generator:
+      horizontal: circular
+      vertical: pillar
+
+  # Item Shuffle Mode - Every `cooldown` seconds, you lose your items and get 10 random new ones.
+  item-shuffle:
+    cooldown: 10
+    time-limit: 5min
+    visual:
+      color: "#A3FF54"
+      show-scoreboard: true
+      show-actionbar: true
+      show-bossbar: false
+    generator:
+      horizontal: circular
+      vertical: pillar
 
   # Original Mode - The original mode as seen in CheapPickle's videos.
   original:
     cooldown: 5
     time-limit: 5min
-    color: "#FFFFFF"
-    generator: circular
-    platforms: pillars
+    visual:
+      color: "#FFFFFF"
+      show-scoreboard: true
+      show-actionbar: false
+      show-bossbar: true
+    generator:
+      horizontal: circular
+      vertical: pillar
+
+  # Player Shuffle Mode - Every `cooldown` seconds, all player's positions are randomly swapped.
+  player-shuffle:
+    cooldown: 10
+    time-limit: 5min
+    visual:
+      color: "#54FFAF"
+      show-scoreboard: true
+      show-actionbar: true
+      show-bossbar: false
+    generator:
+      horizontal: circular
+      vertical: pillar
+
+
+## The Configuration Version ##
+# DO NOT MODIFY THIS, OR THE CONFIGURATION WILL LIKELY BREAK OR BE RESET!
+version: 2

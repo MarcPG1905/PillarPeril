@@ -2,6 +2,8 @@ package com.marcpg.pillarperil
 
 import com.marcpg.libpg.init.KotlinPlugin
 import com.marcpg.libpg.init.KotlinPluginCompanion
+import com.marcpg.libpg.util.ServerUtils
+import com.marcpg.pillarperil.util.Configuration
 import java.net.URI
 
 class PillarPeril : KotlinPlugin(Companion) {
@@ -18,9 +20,14 @@ class PillarPeril : KotlinPlugin(Companion) {
         loadTranslations(URI("https://marcpg.com/pillar-peril/lang/all"))
 
         addListeners()
-        addCommands()
+        Configuration.init()
+
+        addCommands(
+            ServerUtils.Cmd(Commands.ppConfig, "Manage the PillarPeril configuration.", "pillar-peril-config", "pp-settings"),
+        )
     }
 
     override fun disable() {
+        Configuration.save()
     }
 }
