@@ -19,7 +19,7 @@ class PillarPeril : KotlinPlugin(Companion) {
 
         loadTranslations(URI("https://marcpg.com/pillar-peril/lang/all"))
 
-        addListeners()
+        Registry.load()
         Configuration.init()
 
         addCommands(
