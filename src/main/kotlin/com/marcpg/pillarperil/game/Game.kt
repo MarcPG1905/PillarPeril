@@ -8,6 +8,7 @@ import com.marcpg.libpg.util.component
 import com.marcpg.libpg.util.miniMessage
 import com.marcpg.pillarperil.PillarPeril
 import com.marcpg.pillarperil.game.util.GameInfo
+import com.marcpg.pillarperil.game.util.GameManager
 import com.marcpg.pillarperil.generation.Buildings
 import com.marcpg.pillarperil.player.PillarPlayer
 import com.marcpg.pillarperil.util.Configuration
@@ -123,6 +124,7 @@ abstract class Game(
         timeLeft.set(info.timeLimit())
         itemCountdown.set(info.itemCountdown())
 
+        GameManager.add(this)
         info("Initialized the game.")
     }
 
@@ -268,6 +270,7 @@ abstract class Game(
     }
 
     fun clear() {
+        GameManager.remove(this)
         initialPlayers.forEach { it.clear(true) }
         buildings.reset()
         bossBar?.stop()

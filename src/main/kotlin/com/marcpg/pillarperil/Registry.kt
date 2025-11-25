@@ -1,5 +1,6 @@
 package com.marcpg.pillarperil
 
+import com.marcpg.pillarperil.game.mode.*
 import com.marcpg.pillarperil.generation.HorGenCompanion
 import com.marcpg.pillarperil.generation.HorizontalGen
 import com.marcpg.pillarperil.generation.VertGenCompanion
@@ -12,8 +13,18 @@ object Registry {
     val verticalGenerators = listOf<VertGenCompanion<out VerticalGen>>(
     ).associateBy { it.namespace }
 
+    val modes = listOf(
+        BlockyGame,
+        ChaosGame,
+        CubeCraftGame,
+        ItemOnlyGame,
+        OriginalGame,
+    ).associateBy { it.gameInfo.namespace }
+
     fun load() {
         PillarPeril.LOG.info("[Registry] Loaded ${horizontalGenerators.size} horizontal generators as Map<Name, HorGen>.")
         PillarPeril.LOG.info("[Registry] Loaded ${verticalGenerators.size} vertical generators as Map<Name, VertGen>.")
+
+        PillarPeril.LOG.info("[Registry] Loaded ${modes.size} modes as Map<Name, Mode>.")
     }
 }
