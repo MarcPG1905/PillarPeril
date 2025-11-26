@@ -1,16 +1,20 @@
 package com.marcpg.pillarperil
 
 import com.marcpg.pillarperil.game.mode.*
-import com.marcpg.pillarperil.generation.HorGenCompanion
-import com.marcpg.pillarperil.generation.HorizontalGen
-import com.marcpg.pillarperil.generation.VertGenCompanion
-import com.marcpg.pillarperil.generation.VerticalGen
+import com.marcpg.pillarperil.generation.horizontal.CircularHorGen
+import com.marcpg.pillarperil.generation.horizontal.RandomHorGen
+import com.marcpg.pillarperil.generation.vertical.BlockVertGen
+import com.marcpg.pillarperil.generation.vertical.PillarVertGen
 
 object Registry {
-    val horizontalGenerators = listOf<HorGenCompanion<out HorizontalGen>>(
+    val horizontalGenerators = listOf(
+        CircularHorGen,
+        RandomHorGen,
     ).associateBy { it.namespace }
 
-    val verticalGenerators = listOf<VertGenCompanion<out VerticalGen>>(
+    val verticalGenerators = listOf(
+        BlockVertGen,
+        PillarVertGen,
     ).associateBy { it.namespace }
 
     val modes = listOf(
