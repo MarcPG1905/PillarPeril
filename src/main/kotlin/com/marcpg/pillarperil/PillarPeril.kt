@@ -3,6 +3,7 @@ package com.marcpg.pillarperil
 import com.marcpg.libpg.init.KotlinPlugin
 import com.marcpg.libpg.init.KotlinPluginCompanion
 import com.marcpg.libpg.util.ServerUtils
+import com.marcpg.pillarperil.event.GameEvents
 import com.marcpg.pillarperil.util.Configuration
 import java.net.URI
 
@@ -22,6 +23,7 @@ class PillarPeril : KotlinPlugin(Companion) {
         Registry.load()
         Configuration.init()
 
+        addListeners(GameEvents)
         addCommands(
             ServerUtils.Cmd(Commands.ppConfig, "Manage the PillarPeril configuration.", "pillar-peril-config", "pp-settings"),
         )
