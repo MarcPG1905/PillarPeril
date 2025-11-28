@@ -4,7 +4,11 @@ import com.marcpg.libpg.init.KotlinPlugin
 import com.marcpg.libpg.init.KotlinPluginCompanion
 import com.marcpg.libpg.util.ServerUtils
 import com.marcpg.pillarperil.event.GameEvents
+import com.marcpg.pillarperil.event.PlayerEvents
+import com.marcpg.pillarperil.game.Game
+import com.marcpg.pillarperil.game.util.GameManager
 import com.marcpg.pillarperil.util.Configuration
+import org.bukkit.Bukkit
 import java.net.URI
 
 class PillarPeril : KotlinPlugin(Companion) {
@@ -12,6 +16,10 @@ class PillarPeril : KotlinPlugin(Companion) {
         lateinit var PLUGIN: PillarPeril
 
         override val VERSION: String = "0.2.0"
+
+        fun sendCommand(cmd: String) {
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd)
+        }
     }
 
     @Suppress("UnstableApiUsage")
@@ -23,13 +31,15 @@ class PillarPeril : KotlinPlugin(Companion) {
         Registry.load()
         Configuration.init()
 
-        addListeners(GameEvents)
+        addListeners(GameEvents, PlayerEvents)
         addCommands(
+            ServerUtils.Cmd(Commands.game, "Utilities for managing the Pillar Peril games or starting new ones.", "pillar-peril", "match", "round"),
             ServerUtils.Cmd(Commands.ppConfig, "Manage the PillarPeril configuration.", "pillar-peril-config", "pp-settings"),
         )
     }
 
     override fun disable() {
+        GameManager.games.values.toList().forEach { it.end(Game.EndingCause.FORCE) }
         Configuration.save()
     }
 }
