@@ -20,6 +20,7 @@ object GameEvents : Listener {
     fun onServerTickEnd(event: ServerTickEndEvent) {
         val tick = Ticking.Tick(event.tickNumber)
 
+        QueueManager.tick(tick)
         GameManager.games.values.toList().forEach { it.tick(tick) }
     }
 

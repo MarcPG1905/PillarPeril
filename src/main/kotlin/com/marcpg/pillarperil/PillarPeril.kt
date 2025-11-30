@@ -34,6 +34,7 @@ class PillarPeril : KotlinPlugin(Companion) {
         addListeners(GameEvents, PlayerEvents)
         addCommands(
             ServerUtils.Cmd(Commands.game, "Utilities for managing the Pillar Peril games or starting new ones.", "pillar-peril", "match", "round"),
+            ServerUtils.Cmd(Commands.queue, "Join, leave, and manage the Pillar Peril game queue if enabled."),
             ServerUtils.Cmd(Commands.ppConfig, "Manage the PillarPeril configuration.", "pillar-peril-config", "pp-settings"),
         )
     }

@@ -9,6 +9,7 @@ import com.marcpg.libpg.util.miniMessage
 import com.marcpg.pillarperil.PillarPeril
 import com.marcpg.pillarperil.game.util.GameInfo
 import com.marcpg.pillarperil.game.util.GameManager
+import com.marcpg.pillarperil.game.util.QueueManager
 import com.marcpg.pillarperil.generation.Buildings
 import com.marcpg.pillarperil.player.PillarPlayer
 import com.marcpg.pillarperil.util.Configuration
@@ -99,6 +100,8 @@ abstract class Game(
 
         bukkitPlayers
             .onEach {
+                QueueManager.remove(it)
+
                 it.gameMode = GameMode.SURVIVAL
                 it.clearActivePotionEffects()
                 it.inventory.clear()

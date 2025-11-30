@@ -7,7 +7,9 @@ import com.marcpg.libpg.sarge.*
 import com.marcpg.libpg.util.*
 import com.marcpg.pillarperil.game.Game
 import com.marcpg.pillarperil.game.util.GameManager
+import com.marcpg.pillarperil.game.util.QueueManager
 import com.marcpg.pillarperil.util.Configuration
+import com.marcpg.pillarperil.util.QueueMethod
 import com.mojang.brigadier.arguments.StringArgumentType
 import io.papermc.paper.command.brigadier.CommandSourceStack
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes
@@ -15,6 +17,7 @@ import io.papermc.paper.command.brigadier.argument.resolvers.BlockPositionResolv
 import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSelectorArgumentResolver
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.World
+import org.bukkit.entity.Player
 
 @Suppress("UnstableApiUsage")
 object Commands {
@@ -118,6 +121,68 @@ object Commands {
 ${game.initialPlayers.joinToString { "<dark_gray>| <${if (it in game.players) "green" else "red"}>${it.name()}" }}
 <dark_gray>========================
                     """.trimIndent())
+                }
+            }
+        }
+    }
+
+    val queue = command<CommandSourceStack>("queue") {
+        require { Configuration.queueEnabled }
+        subcommand("join") {
+            require { Configuration.queueMethod == QueueMethod.COMMAND && it.executor is Player }
+            playerAction { _, player ->
+                if (player in QueueManager.queue)
+                    return@playerAction player.locale().component("queue.join.already", color = NamedTextColor.YELLOW)
+
+                QueueManager.add(player)
+                return@playerAction player.locale().component("queue.join.success", color = NamedTextColor.GREEN)
+            }
+        }
+        subcommand("leave") {
+            require { Configuration.queueMethod == QueueMethod.COMMAND && it.executor is Player }
+            playerAction { _, player ->
+                if (player !in QueueManager.queue)
+                    return@playerAction player.locale().component("queue.leave.not_queued", color = NamedTextColor.RED)
+
+                QueueManager.remove(player)
+                return@playerAction player.locale().component("queue.leave.success", color = NamedTextColor.YELLOW)
+            }
+        }
+        subcommand("clear") {
+            require { it.sender.isOp }
+            action { context ->
+                if (QueueManager.queue.isEmpty())
+                    return@action context.exec().locale().component("queue.clear.empty", color = NamedTextColor.YELLOW)
+
+                QueueManager.queue.clear()
+                return@action context.exec().locale().component("queue.clear.success", color = NamedTextColor.YELLOW)
+            }
+        }
+        subcommand("add") {
+            require { it.sender.isOp }
+            argument("players", ArgumentTypes.players()) {
+                action { context ->
+                    val players = context.arg<PlayerSelectorArgumentResolver>("players").resolve(context.source)
+
+                    if (QueueManager.queue.containsAll(players))
+                        return@action context.exec().locale().component("queue.add.already", color = NamedTextColor.YELLOW)
+
+                    players.forEach { QueueManager.add(it) }
+                    return@action context.exec().locale().component("queue.add.success", color = NamedTextColor.GREEN)
+                }
+            }
+        }
+        subcommand("remove") {
+            require { it.sender.isOp }
+            argument("players", ArgumentTypes.players()) {
+                action { context ->
+                    val players = context.arg<PlayerSelectorArgumentResolver>("players").resolve(context.source)
+
+                    if (players.all { it !in QueueManager.queue })
+                        return@action context.exec().locale().component("queue.remove.not_queued", color = NamedTextColor.RED)
+
+                    players.forEach { QueueManager.remove(it) }
+                    return@action context.exec().locale().component("queue.remove.success", color = NamedTextColor.YELLOW)
                 }
             }
         }
