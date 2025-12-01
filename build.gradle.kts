@@ -25,7 +25,7 @@ repositories {
 }
 
 dependencies {
-    paperweight.paperDevBundle("1.21.4-R0.1-SNAPSHOT")
+    paperweight.paperDevBundle("1.21.8-R0.1-SNAPSHOT")
 
     implementation(files("libs/ktlibpg-platform-brigadier-2.0.0.jar"))
     implementation(files("libs/ktlibpg-platform-adventure-2.0.0.jar"))

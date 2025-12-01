@@ -5,60 +5,71 @@ This game originated from a popular YouTube channel called [CheapPickle](https:/
 
 ## Special about this Version
 
-The special part about this plugin is the high *customizability* and *huge amount of different modes*!    
-Here are *some* of the many different modes that are available. Each of them being fully customizable:
-Name | Cooldown | Time Limit | Pillars | Description
----|---|---|---|---
-Blocky | 10 Seconds | 4 Minutes | Circular | Gives you a random weapon at the start, but you only get blocks randomly.
-Chaos | 3 Seconds | 8 Minutes | Random | No item filters, pillars are randomized and the item cooldown is very low.
-CubeCraft | 5 Seconds | 5 Minutes | Circular | Game mode with the same rules and properties as CubeCraft's "Pillars of Fortune".
-Item-Only | 10 Seconds | 10 Minutes | Circular | You only get items and no blocks, which makes the game very long and hard.
-Original | 5 Seconds | 5 Minutes | Circular | The original mode as seen in CheapPickle's videos.
-Soon... | ... | ... | ... | More modes are coming soon...!
+The special part about this plugin is the high *customizability* and *a bunch of different modes*!    
+Here are the different modes that are available, with each of them being fully customizable:
+
+| Name           | Cooldown   | Time Limit | Pillars  | Description                                                                       |
+|----------------|------------|------------|----------|-----------------------------------------------------------------------------------|
+| Blocky         | 10 Seconds | 4 Minutes  | Circular | Gives you a random weapon at the start, but you only get blocks randomly.         |
+| Chaos          | 3 Seconds  | 8 Minutes  | Random   | No item filters, pillars are randomized and the item cooldown is very low.        |
+| CubeCraft      | 5 Seconds  | 5 Minutes  | Circular | Game mode with the same rules and properties as CubeCraft's "Pillars of Fortune". |
+| Item-Only      | 10 Seconds | 10 Minutes | Circular | You only get items and no blocks, which makes the game very long and hard.        |
+| Item-Shuffle   | 10 Seconds | 5 Minutes  | Circular | Every 10 seconds, you lose your items and get 10 random new ones.                 |
+| Original       | 5 Seconds  | 5 Minutes  | Circular | The original mode as seen in CheapPickle's videos.                                |
+| Player-Shuffle | 10 Seconds | 5 Minutes  | Circular | Every 10 seconds, all player's positions are randomly swapped.                    |
+| Soon...        | ...        | ...        | ...      | More modes are coming soon...!                                                    |
 
 ## Usage
 
 ### Configuration
 
-The configuration is designed to be simple and descriptive. You can find everything you need inside the configuration file, which ships with useful descriptions. The functionality to customize the different game modes will be extended in the next few updates.
+The configuration is designed to be simple and descriptive.  
+You can find everything you need inside the configuration file, which ships with useful descriptions.
+
+There are special options in the configuration, which have **placeholders**. Configuration supporting placeholders will say so in their comment above.  
+All possible placeholders will be listed above and you just have to have { and } surrounding the placeholder's name, like `{name}`.
+
+> [!NOTE]
+> Values with placeholders should be surrounded by quotes ("text"), as they contain special characters.
 
 ### Translations
 
-Translations are automatically downloaded over [a simple database](https://marcpg.com/pillarperil/lang/), which means that you don't have to do anything except have a stable internet connection. The download itself will only take a few kilobytes on each startup.
+Translations are automatically downloaded over [a simple database](https://marcpg.com/pillar-peril/lang/all), which means that you don't have to do anything to have them.
 
-## Game Management
+The download itself will only take a few kilobytes on each startup, and if there is no internet connection, it will just use the default English translations.
 
-Everything you want to do will be available in the `/games` command. You probably won't even need the following guides, because everything will explain itself when typing out the command.
+### Game Management
 
-### Start a Game
+Everything you want to do will be available in the `/game` command.  
+You probably won't even need the following guides, because everything will explain itself when typing out the command.
 
-To start a game, you just have to use `/games start`, followed by the game info. These are some examples:
-
+- **Start** a game using `/game start <mode> <center> <world> <players>`, e.g.:
 ```
-/games start force cubecraft ~ ~ ~ minecraft:overworld @a
-/games start force original 0 -100 20 minecraft:the_nether @a[name=!MarcPG1905]
-/games start force item-only ~100 ~ 0 minecraft:the_end @a
-```
-
-There is currently no queue system, so you can only *force* a game.
-
-### Stop a Game
-
-To stop a game, you just have to use `/games stop`, followed by the game's ID. This is an example usage:
-
-```
-/games stop 2yh1X6CenI
+/game start cubecraft ~ ~ ~ minecraft:overworld @a
+/game start original 0 -100 20 minecraft:the_nether @a[name=!MarcPG1905]
 ```
 
-### Get Game Info
-
-To get info about a game, just use `/games info`, followed by the game's ID. This is an example usage:
-
+- **Stop** a game using `/game stop <id>`, e.g.:
 ```
-/games info 2yh1X6CenI
+/game stop 2yiKLf2h1X6CenH1
 ```
 
-It will return a bunch of technical details and other info about the game, like the current item cooldown and players.
+- Get **info** about a game using `/game info <id>`, e.g.:
+```
+/game info 2yiKLf2h1X6CenH1
+```
+
+- **List** all running games using `/game list`. This will also show some info about each of the games (for maximum info, please use `/game info <id>` instead).
+  - Use `/game list raw` to get a **raw list** which uses `2yiKLf2h1X6CenH1;h1enf2H12yiX6CKL;I8jos1lsvkh57wjs` format or, just `empty`.
+
+### Queue System
+
+The queue system is very flexible and has two methods, which can be changed in the configuration:
+
+- **Command**: Players join the queue using the `/queue` command.
+- **Auto**: Anyone who is not currently playing a game is automatically inside the queue.
+
+All settings, like minimum/maximum players to start games, the game mode to start, the world and location to use, etc. can all be changed inside the configuration.
 
 ## Releases
 
