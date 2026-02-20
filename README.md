@@ -1,6 +1,6 @@
 # Pillar Peril
 
-Pillar Peril in a open-source game mode where you spawn on bedrock pillars and have to win using random items that you get every few seconds. Some items may be good for building, some may be good for killing other players, and some may just be complete trash.  
+Pillar Peril in a open-source game mode where you spawn on bedrock platforms and have to win using random items that you get every few seconds. Some items may be good for building, some may be good for killing other players, and some may just be complete trash.  
 This game originated from a popular YouTube channel called [CheapPickle](https://youtube.com/@CheapPickle) and was later adapted by the popular Minecraft server, [CubeCraft](https://www.cubecraft.net/), which both were the main inspiration for this plugin.
 
 ## Special about this Version
@@ -32,6 +32,9 @@ All possible placeholders will be listed above and you just have to have { and }
 > [!NOTE]
 > Values with placeholders should be surrounded by quotes ("text"), as they contain special characters.
 
+You can also modify most of the configuration options using the `/pp-config modify` command, which is pretty self-explanatory when you type it and look at the suggestions.  
+For example, if you wanted to enable the queue, you'd just have to use `/pp-config modify queue.enabled set true`. 
+
 ### Translations
 
 Translations are automatically downloaded over [a simple database](https://marcpg.com/pillar-peril/lang/all), which means that you don't have to do anything to have them.
@@ -60,7 +63,7 @@ You probably won't even need the following guides, because everything will expla
 ```
 
 - **List** all running games using `/game list`. This will also show some info about each of the games (for maximum info, please use `/game info <id>` instead).
-  - Use `/game list raw` to get a **raw list** which uses `2yiKLf2h1X6CenH1;h1enf2H12yiX6CKL;I8jos1lsvkh57wjs` format or, just `empty`.
+  - Use `/game list raw` to get a **raw list** which uses `2yiKLf2h1X6CenH1;h1enf2H12yiX6CKL;I8jos1lsvkh57wjs` format or, just `empty`. This is useful for creating datapacks in combination with this plugin.
 
 ### Queue System
 
@@ -89,6 +92,6 @@ You can join my Discord community and just ping me for a quick response: [MarcPG
 
 ### Direct Contact
 
-If you don't use Discord or would like to contact me otherwise, please rely on one of these methods:
-- E-Mail: [me@marcpg.com](mailto:me@marcpg.com)
+If you don't want to join the Discord server or would like to contact me otherwise, please rely on one of these methods:
+- E-Mail: [marcpg@proton.me](mailto:marcpg@proton.me)
 - Discord: `@marcpg1905`
