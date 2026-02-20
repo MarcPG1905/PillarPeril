@@ -80,8 +80,9 @@ You can find our official releases on these platforms:
 - Modrinth (Recommended): [modrinth.com/plugin/pillarperil](https://modrinth.com/plugin/pillarperil)
 - GitHub: [github.com/MarcPG1905/PillarPeril/releases](https://github.com/MarcPG1905/PillarPeril/releases)
 - Hangar: [hangar.papermc.io/MarcPG1905/PillarPeril](https://hangar.papermc.io/MarcPG1905/PillarPeril)
+
+Not Recommended (outdated websites):
 - SpigotMC: [spigotmc.org/resources/pillar-peril...](https://www.spigotmc.org/resources/pillar-peril.119457)
-- Planet Minecraft: [planetminecraft.com/mod/pillar-peril](https://www.planetminecraft.com/mod/pillar-peril/)
 - CurseForge: [curseforge.com/minecraft/bukkit-plugins/pillarperil](https://www.curseforge.com/minecraft/bukkit-plugins/pillarperil)
 
 ## Contact
