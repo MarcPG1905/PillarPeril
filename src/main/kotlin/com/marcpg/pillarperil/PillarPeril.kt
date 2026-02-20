@@ -24,6 +24,8 @@ class PillarPeril : KotlinPlugin(Companion) {
 
     @Suppress("UnstableApiUsage")
     override fun enable() {
+        saveDefaultConfig()
+
         PLUGIN = this
 
         loadTranslations(URI("https://marcpg.com/pillar-peril/lang/all"))

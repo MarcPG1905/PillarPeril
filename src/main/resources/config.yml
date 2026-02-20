@@ -6,28 +6,27 @@
 ##_________________|_|   |_|_|_|\__,_|_|  |_|   \___|_|  |_|_|_________________##
 ##                                Configuration                                ##
 ##                                                                             ##
-##       WEBSITE:       https://marcpg.com/pillar-peril                        ##
 ##       SOURCE-CODE:   https://github.com/MarcPG1905/PillarPeril              ##
 ##       BUGS & ISSUES: https://github.com/MarcPG1905/PillarPeril/issues       ##
 ##                                                                             ##
 #################################################################################
 
 
-## Pillar Height ##
-# The y-coordinate that the bedrock pillars will raise to.
+## Platform Height ##
+# The y-coordinate that the bedrock platforms will raise to.
 # Default: 200
 platform-height: 200
 
 
 ## Max Fall Distance ##
-# The maximum distance you can fall from the pillars until you die.
+# The maximum distance you can fall from the platforms until you die.
 # This number will be extracted from the pillar height to determine the y-coordinate you die at.
 # Default: 25
 max-fall: 25
 
 
 ## Pillar Distance Factor ##
-# The factor of the distance between pillars. This is used to determine the radius of the pillar field.
+# The factor of the distance between platforms. This is used to determine the radius of the pillar field.
 # Default: 10.0
 platform-distance-factor: 10.0
 
@@ -73,7 +72,10 @@ player-spawn:
 
   # The location to spawn the player at.
   # If the y-component is set to -64.0, the player will spawn at the world spawn.
-  location: [ 0.0, -64.0, 0.0 ]
+  location:
+    x: 0.0
+    y: -64.0
+    z: 0.0
 
 
 ## Queue ##
@@ -112,7 +114,10 @@ queue:
 
   # The location to start the game at.
   # If the y-component is set to -64.0, the game will start at the world spawn.
-  location: [ 0.0, -64.0, 0.0 ]
+  location:
+    x: 0.0
+    y: -64.0
+    z: 0.0
 
   # An ordered list of commands to execute before any world or location is accessed.
   # This should only really be used to create a world for the game when using another plugin like MultiVerse.
@@ -248,4 +253,4 @@ modes:
 
 ## The Configuration Version ##
 # DO NOT MODIFY THIS, OR THE CONFIGURATION WILL LIKELY BREAK OR BE RESET!
-version: 2
+version: 3

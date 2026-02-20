@@ -1,5 +1,6 @@
 package com.marcpg.pillarperil.game.util
 
+import com.marcpg.libpg.config.ExtendedEntryTypes
 import com.marcpg.libpg.data.time.Time
 import com.marcpg.libpg.lang.string
 import com.marcpg.pillarperil.PillarPeril
@@ -20,7 +21,7 @@ data class GameInfo(
     val mode: GameCompanion<*>,
     val namespace: String,
     val itemCountdown: () -> Long = { Configuration.provider.getLong("modes.$namespace.cooldown", 5L) },
-    val timeLimit: () -> Time = { Time.parse(Configuration.provider.getString("modes.$namespace.time-limit", "5min")) },
+    val timeLimit: () -> Time = { ExtendedEntryTypes.time.convert(Configuration.provider.getSection("modes.$namespace.time-limit", mapOf("min" to 5))) ?: Time(5, Time.Unit.MINUTES) },
 
     val accentColor: () -> TextColor = { Configuration.provider.getString("modes.$namespace.visual.color", "#FFFFFF").fromHexToTextColor() },
     val showScoreboard: () -> Boolean = { Configuration.provider.getBoolean("modes.$namespace.visual.show-scoreboard") },

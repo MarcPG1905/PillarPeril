@@ -10,6 +10,7 @@ import com.marcpg.pillarperil.game.util.GameManager
 import com.marcpg.pillarperil.game.util.QueueManager
 import com.marcpg.pillarperil.util.Configuration
 import com.marcpg.pillarperil.util.QueueMethod
+import com.mojang.brigadier.LiteralMessage
 import com.mojang.brigadier.arguments.StringArgumentType
 import io.papermc.paper.command.brigadier.CommandSourceStack
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes
@@ -201,6 +202,11 @@ ${game.initialPlayers.joinToString { "<dark_gray>| <${if (it in game.players) "g
         }
         subcommand("modify") {
             argument("path", StringArgumentType.word()) {
+                suggest {
+                    Configuration.getEntries().forEach { entry ->
+                        suggest(entry.key, LiteralMessage("Current: " + entry.value.getBaseValue().toString()))
+                    }
+                }
                 subcommand("get") {
                     action { context ->
                         val locale = context.source.sender.locale()
@@ -249,51 +255,37 @@ ${game.initialPlayers.joinToString { "<dark_gray>| <${if (it in game.players) "g
                         }
                     }
                 }
-                subcommand("add") {
-                    argument("value", StringArgumentType.greedyString()) {
-                        action { context ->
-                            val locale = context.source.sender.locale()
-                            val path = context.arg<String>("path")
-                            val value = context.arg<String>("value")
+                fun listOperation(name: String, action: MutableList<Any?>.(String) -> Unit) {
+                    subcommand(name) {
+                        argument("value", StringArgumentType.greedyString()) {
+                            action { context ->
+                                val locale = context.source.sender.locale()
+                                val path = context.arg<String>("path")
+                                val value = context.arg<String>("value")
 
-                            if (Configuration.provider.approximatePathType(path) != ConfigValueType.LIST)
-                                return@action locale.component("config.not_list", path, color = NamedTextColor.RED)
+                                if (Configuration.provider.approximatePathType(path) != ConfigValueType.LIST)
+                                    return@action locale.component("config.not_list", path, color = NamedTextColor.RED)
 
-                            val list = Configuration.provider.getList(path)!!.toMutableList()
-                            list += value
-                            Configuration.provider.setList(path, list)
+                                val list = Configuration.provider.getList(path)!!.toMutableList()
+                                if (name == "remove" && value !in list)
+                                    return@action locale.component("config.remove.not_containing", value, path, color = NamedTextColor.RED)
 
-                            runCatching { Configuration.save() }
-                                .onFailure { error("save") }
+                                list.action(value)
+                                Configuration.provider.setList(path, list)
 
-                            return@action locale.component("config.add.confirm", value, path, color = NamedTextColor.YELLOW)
-                        }
-                    }
-                }
-                subcommand("remove") {
-                    argument("value", StringArgumentType.greedyString()) {
-                        action { context ->
-                            val locale = context.source.sender.locale()
-                            val path = context.arg<String>("path")
-                            val value = context.arg<String>("value")
+                                runCatching {
+                                    Configuration.save()
+                                }.onFailure {
+                                    return@action locale.component("config.error", color = NamedTextColor.RED)
+                                }
 
-                            if (Configuration.provider.approximatePathType(path) != ConfigValueType.LIST)
-                                return@action locale.component("config.not_list", path, color = NamedTextColor.RED)
-
-                            val list = Configuration.provider.getList(path)!!.toMutableList()
-                            list -= value
-                            Configuration.provider.setList(path, list)
-
-                            runCatching {
-                                Configuration.save()
-                            }.onFailure {
-                                return@action locale.component("config.error", color = NamedTextColor.RED)
+                                return@action locale.component("config.$name.confirm", value, path, color = NamedTextColor.YELLOW)
                             }
-
-                            return@action locale.component("config.remove.confirm", value, path, color = NamedTextColor.YELLOW)
                         }
                     }
                 }
+                listOperation("add") { add(it) }
+                listOperation("remove") { remove(it) }
             }
         }
     }

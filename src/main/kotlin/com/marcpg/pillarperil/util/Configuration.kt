@@ -1,8 +1,8 @@
 package com.marcpg.pillarperil.util
 
-import com.google.common.base.Optional
 import com.marcpg.libpg.config.*
 import com.marcpg.libpg.storing.Cord
+import com.marcpg.libpg.util.BasicOptional
 import com.marcpg.libpg.util.toLocation
 import com.marcpg.pillarperil.PillarPeril
 import com.marcpg.pillarperil.Registry
@@ -12,9 +12,10 @@ import org.bukkit.World
 
 object Configuration : Config(PaperConfigProvider()) {
     override val versionHistory: List<ConfigVersion> = listOf(
-        ConfigVersion(id = 2)
+        ConfigVersion(id = 2),
+        ConfigVersion(id = 3),
     )
-    override val version: Int = 2
+    override val version: Int = 3
 
     var platformHeight by double("platform-height", 200.0)
     var maxFall by double("max-fall", 25.0)
@@ -24,8 +25,8 @@ object Configuration : Config(PaperConfigProvider()) {
     var respawnAtConfig by boolean("respawn-at-config")
 
     var spawnGameMode by enum<GameMode>("player-spawn.game-mode", GameMode.ADVENTURE)
-    var spawnWorld by custom("player-spawn.world", PaperEntryTypes.world, Optional.absent())
-    var spawnCord by custom("player-spawn.location", PaperEntryTypes.cord, Cord(0.0, -64.0, 0.0))
+    var spawnWorld by custom("player-spawn.world", PaperEntryTypes.world, BasicOptional.ofNull())
+    var spawnCord by custom("player-spawn.location", ExtendedEntryTypes.cordMap, Cord(0.0, -64.0, 0.0))
 
     var queueEnabled by boolean("queue.enabled")
     var queueMinPlayers by int("queue.min-players", 3)
@@ -34,12 +35,12 @@ object Configuration : Config(PaperConfigProvider()) {
     var queueMethod by enum<QueueMethod>("queue.method", QueueMethod.COMMAND)
     var queueMode by custom("queue.mode", PPEntryTypes.registry { Registry.modes }, OriginalGame)
     var queueWorldName by custom("queue.world", PPEntryTypes.placeholder, PlaceholderNameGetter("game-{id}"))
-    var queueCord by custom("queue.location", PaperEntryTypes.cord, Cord(0.0, -64.0, 0.0))
+    var queueCord by custom("queue.location", ExtendedEntryTypes.cordMap, Cord(0.0, -64.0, 0.0))
     var queuePreCommands by custom("queue.pre-commands", PPEntryTypes.placeholder.list, listOf())
     var queuePostCommands by custom("queue.post-commands", PPEntryTypes.placeholder.list, listOf())
 
     val deathHeight get() = platformHeight - maxFall
-    val spawnLocation get() = if (spawnCord.y == -64.0) spawnWorld.get().spawnLocation else spawnCord.toLocation(spawnWorld.get())
+    val spawnLocation get() = if (spawnCord.y == -64.0) spawnWorld.value!!.spawnLocation else spawnCord.toLocation(spawnWorld.value)
     val queueCheckInterval get() = queueCheckIntervalSecs * 20
     fun queueLocation(world: World) = if (queueCord.y == -64.0) world.spawnLocation else queueCord.toLocation(world)
 

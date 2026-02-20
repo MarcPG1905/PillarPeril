@@ -73,7 +73,16 @@ object QueueManager : Ticking {
 
         Configuration.queuePreCommands.forEach { PillarPeril.sendCommand(it(map)) }
 
-        val world = Bukkit.getWorld(Configuration.queueWorldName(map))!!
+        val worldName = Configuration.queueWorldName(map)
+        val world = Bukkit.getWorld(worldName)
+        if (world == null) {
+            players.forEach {
+                it.sendMessage(component("Configured world \"$worldName\" does not exist, which means the game cannot start.", NamedTextColor.RED))
+                it.sendMessage(component("Please notify an admin of the server.", NamedTextColor.RED))
+            }
+            return
+        }
+
         val location = Configuration.queueLocation(world)
 
         map += mapOf(
