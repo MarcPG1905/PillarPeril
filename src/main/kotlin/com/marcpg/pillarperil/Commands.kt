@@ -149,41 +149,56 @@ ${game.initialPlayers.joinToString { "<dark_gray>| <${if (it in game.players) "g
                 return@playerAction player.locale().component("queue.leave.success", color = NamedTextColor.YELLOW)
             }
         }
-        subcommand("clear") {
+        subcommand("admin") {
             require { it.sender.isOp }
-            action { context ->
-                if (QueueManager.queue.isEmpty())
-                    return@action context.exec().locale().component("queue.clear.empty", color = NamedTextColor.YELLOW)
-
-                QueueManager.queue.clear()
-                return@action context.exec().locale().component("queue.clear.success", color = NamedTextColor.YELLOW)
-            }
-        }
-        subcommand("add") {
-            require { it.sender.isOp }
-            argument("players", ArgumentTypes.players()) {
+            subcommand("list") {
                 action { context ->
-                    val players = context.arg<PlayerSelectorArgumentResolver>("players").resolve(context.source)
+                    if (QueueManager.queue.isEmpty())
+                        return@action context.exec().locale().component("queue.list.empty", color = NamedTextColor.GREEN)
 
-                    if (QueueManager.queue.containsAll(players))
-                        return@action context.exec().locale().component("queue.add.already", color = NamedTextColor.YELLOW)
+                    QueueManager.queue.clear()
 
-                    players.forEach { QueueManager.add(it) }
-                    return@action context.exec().locale().component("queue.add.success", color = NamedTextColor.GREEN)
+                    context.feedback(context.exec().locale().component("queue.list.list", color = NamedTextColor.GREEN))
+                    for (player in QueueManager.queue) {
+                        context.feedback(component("| - ", NamedTextColor.GRAY).append(player.displayName().color(NamedTextColor.WHITE)))
+                    }
+
+                    return@action null
                 }
             }
-        }
-        subcommand("remove") {
-            require { it.sender.isOp }
-            argument("players", ArgumentTypes.players()) {
+            subcommand("add") {
+                argument("players", ArgumentTypes.players()) {
+                    action { context ->
+                        val players = context.arg<PlayerSelectorArgumentResolver>("players").resolve(context.source)
+
+                        if (QueueManager.queue.containsAll(players))
+                            return@action context.exec().locale().component("queue.add.already", color = NamedTextColor.YELLOW)
+
+                        players.forEach { QueueManager.add(it) }
+                        return@action context.exec().locale().component("queue.add.success", color = NamedTextColor.GREEN)
+                    }
+                }
+            }
+            subcommand("remove") {
+                argument("players", ArgumentTypes.players()) {
+                    action { context ->
+                        val players = context.arg<PlayerSelectorArgumentResolver>("players").resolve(context.source)
+
+                        if (players.all { it !in QueueManager.queue })
+                            return@action context.exec().locale().component("queue.remove.not_queued", color = NamedTextColor.RED)
+
+                        players.forEach { QueueManager.remove(it) }
+                        return@action context.exec().locale().component("queue.remove.success", color = NamedTextColor.YELLOW)
+                    }
+                }
+            }
+            subcommand("clear") {
                 action { context ->
-                    val players = context.arg<PlayerSelectorArgumentResolver>("players").resolve(context.source)
+                    if (QueueManager.queue.isEmpty())
+                        return@action context.exec().locale().component("queue.clear.empty", color = NamedTextColor.YELLOW)
 
-                    if (players.all { it !in QueueManager.queue })
-                        return@action context.exec().locale().component("queue.remove.not_queued", color = NamedTextColor.RED)
-
-                    players.forEach { QueueManager.remove(it) }
-                    return@action context.exec().locale().component("queue.remove.success", color = NamedTextColor.YELLOW)
+                    QueueManager.queue.clear()
+                    return@action context.exec().locale().component("queue.clear.success", color = NamedTextColor.YELLOW)
                 }
             }
         }
