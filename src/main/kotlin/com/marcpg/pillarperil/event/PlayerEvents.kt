@@ -17,6 +17,9 @@ object PlayerEvents : Listener {
     fun onPlayerDeath(event: PlayerDeathEvent) {
         val player = GameManager.player(event.player) ?: return
 
+        // No longer count kills if the game has already started ending.
+        if (player.game.ending) return
+
         if (event.player.killer != null)
             player.game.player(event.player.killer!!, false)?.kills++
 

@@ -93,7 +93,7 @@ abstract class Game(
 
     private val tickEvents = mutableMapOf<() -> Unit, Int>()
 
-    private var ending = false
+    var ending = false
 
     open fun init() {
         this.center.y = Configuration.platformHeight + 1.0
