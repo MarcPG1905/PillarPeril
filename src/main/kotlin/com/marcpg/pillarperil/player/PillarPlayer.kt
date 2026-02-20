@@ -51,4 +51,6 @@ class PillarPlayer(player: Player, val game: Game) : PlayerMinecraftReceiver(pla
         if (Configuration.queueMethod == QueueMethod.AUTO)
             bukkitRunLater(60L) { QueueManager.add(player) } // Wait 3 seconds before rejoining queue.
     }
+
+    fun eliminate() = game.eliminate(this)
 }

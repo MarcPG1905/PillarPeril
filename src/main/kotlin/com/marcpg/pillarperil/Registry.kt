@@ -22,7 +22,9 @@ object Registry {
         ChaosGame,
         CubeCraftGame,
         ItemOnlyGame,
+        ItemShuffleGame,
         OriginalGame,
+        PlayerShuffleGame,
     ).associateBy { it.gameInfo.namespace }
 
     fun load() {

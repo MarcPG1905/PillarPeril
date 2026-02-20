@@ -117,7 +117,7 @@ abstract class Game(
         items = Registry.ITEM.filter { it != ItemType.AIR && world.isEnabled(it) && info.additionalFilter(it) }.toList()
 
         buildings = Buildings(this, info.horGen().genConstructor(this), info.vertGen().genConstructor(this))
-        buildings.generate().forEachIndexed { i, l -> players[i].teleport(l.clone().add(0.0, 1.0, 0.0)) }
+        buildings.generate().forEachIndexed { i, l -> players[i].teleport(l.clone().add(0.0, 1.0, 0.0).toCenterLocation()) }
 
         if (info.showBossBar()) {
             bossBar = bossBarCreator()

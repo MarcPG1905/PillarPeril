@@ -23,7 +23,7 @@ object PlayerEvents : Listener {
         if (event.player.killer != null)
             player.game.player(event.player.killer!!, false)?.kills++
 
-        player.game.eliminate(player)
+        player.eliminate()
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -43,5 +43,6 @@ object PlayerEvents : Listener {
     @EventHandler(ignoreCancelled = true)
     fun onPlayerQuit(event: PlayerQuitEvent) {
         QueueManager.remove(event.player)
+        GameManager.player(event.player)?.eliminate()
     }
 }
