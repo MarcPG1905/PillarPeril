@@ -1,10 +1,10 @@
 plugins {
     id("java")
 
-    kotlin("jvm") version "2.2.0"
+    kotlin("jvm") version "2.2.20"
 
-    id("com.gradleup.shadow") version "8.3.8"
-    id("xyz.jpenilla.run-paper") version "2.3.1"
+    id("com.gradleup.shadow") version "9.3.0"
+    id("xyz.jpenilla.run-paper") version "3.0.2"
     id("io.papermc.paperweight.userdev") version "2.0.0-beta.18"
 }
 
@@ -17,6 +17,7 @@ kotlin {
 }
 
 repositories {
+    mavenLocal()
     mavenCentral()
 
     maven("https://repo.papermc.io/repository/maven-public/")
@@ -24,15 +25,24 @@ repositories {
     maven("https://marcpg.com/repo/")
 }
 
+private fun DependencyHandler.implementationOrFile(notation: String, fallback: String) {
+    val dep = dependencies.create(notation)
+    val config = configurations.detachedConfiguration(dep)
+
+    try {
+        check(config.resolve().isNotEmpty())
+        implementation(notation)
+    } catch (_: Exception) {
+        implementation(files(fallback))
+    }
+}
+
 dependencies {
     paperweight.paperDevBundle("1.21.8-R0.1-SNAPSHOT")
 
-    implementation(files("libs/ktlibpg-platform-brigadier-2.0.0.jar"))
-    implementation(files("libs/ktlibpg-platform-adventure-2.0.0.jar"))
-    implementation(files("libs/ktlibpg-platform-paper-2.0.0.jar"))
+    implementationOrFile("com.marcpg:ktlibpg-platform-paper:2.0.2", "libs/ktlibpg-platform-paper-2.0.2.jar")
 
     compileOnly(kotlin("stdlib"))
-    compileOnly(kotlin("reflect"))
 }
 
 tasks {
