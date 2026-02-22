@@ -1,98 +1,69 @@
 # Pillar Peril
 
-Pillar Peril in a open-source game mode where you spawn on bedrock platforms and have to win using random items that you get every few seconds. Some items may be good for building, some may be good for killing other players, and some may just be complete trash.  
-This game originated from a popular YouTube channel called [CheapPickle](https://youtube.com/@CheapPickle) and was later adapted by the popular Minecraft server, [CubeCraft](https://www.cubecraft.net/), which both were the main inspiration for this plugin.
+**Pillar Peril** in an **open-source Minecraft minigame** where players **spawn on bedrock pillars**, get **random items** every few seconds, and fight to be the last one standing.
+
+**Highly configurable** modes and **lightweight performance** make it perfect for small and medium servers.
 
 ## Special about this Version
 
 The special part about this plugin is the high *customizability* and *a bunch of different modes*!    
 Here are the different modes that are available, with each of them being fully customizable:
 
-| Name           | Cooldown   | Time Limit | Pillars  | Description                                                                       |
-|----------------|------------|------------|----------|-----------------------------------------------------------------------------------|
-| Blocky         | 10 Seconds | 4 Minutes  | Circular | Gives you a random weapon at the start, but you only get blocks randomly.         |
-| Chaos          | 3 Seconds  | 8 Minutes  | Random   | No item filters, pillars are randomized and the item cooldown is very low.        |
-| CubeCraft      | 5 Seconds  | 5 Minutes  | Circular | Game mode with the same rules and properties as CubeCraft's "Pillars of Fortune". |
-| Item-Only      | 10 Seconds | 10 Minutes | Circular | You only get items and no blocks, which makes the game very long and hard.        |
-| Item-Shuffle   | 10 Seconds | 5 Minutes  | Circular | Every 10 seconds, you lose your items and get 10 random new ones.                 |
-| Original       | 5 Seconds  | 5 Minutes  | Circular | The original mode as seen in CheapPickle's videos.                                |
-| Player-Shuffle | 10 Seconds | 5 Minutes  | Circular | Every 10 seconds, all player's positions are randomly swapped.                    |
-| Soon...        | ...        | ...        | ...      | More modes are coming soon...!                                                    |
+| Name           | Cooldown   | Time | Pillars  | Description                                  |
+|----------------|------------|------|----------|----------------------------------------------|
+| Blocky         | 10s        | 4m   | Circular | Starts with a weapon; only blocks are given. |
+| Chaos          | 3s         | 8m   | Random   | No filters, randomized pillars, fast item cooldown.                            |
+| Classic        | 5s         | 5m   | Circular | Classic rules, inspired by CubeCraft.        |
+| Item-Only      | 10s        | 10m  | Circular | Only items (no blocks): long & tough.        |
+| Item-Shuffle   | 10s        | 5m   | Circular | Items replaced every 10s (9 new items).      |
+| Original       | 5s         | 5m   | Circular | Original gameplay as seen in early videos.   |
+| Player-Shuffle | 10s        | 5m   | Circular | All players randomly swapped every 10s.      |
 
-## Usage
+## Inspiration
 
-### Configuration
+This plugin is inspired by pillar-style minigames featured by creators like [CheapPickle](https://youtube.com/@CheapPickle) and large servers such as [CubeCraft](https://www.cubecraft.net/). This plugin is independent, open-source, and not affiliated with those projects.
 
-The configuration is designed to be simple and descriptive.  
-You can find everything you need inside the configuration file, which ships with useful descriptions.
-
-There are special options in the configuration, which have **placeholders**. Configuration supporting placeholders will say so in their comment above.  
-All possible placeholders will be listed above and you just have to have { and } surrounding the placeholder's name, like `{name}`.
-
-> [!NOTE]
-> Values with placeholders should be surrounded by quotes ("text"), as they contain special characters.
-
-You can also modify most of the configuration options using the `/pp-config modify` command, which is pretty self-explanatory when you type it and look at the suggestions.  
-For example, if you wanted to enable the queue, you'd just have to use `/pp-config modify queue.enabled set true`. 
-
-### Translations
-
-Translations are automatically downloaded over [a simple database](https://marcpg.com/pillar-peril/lang/all), which means that you don't have to do anything to have them.
-
-The download itself will only take a few kilobytes on each startup, and if there is no internet connection, it will just use the default English translations.
+## Commands
 
 ### Game Management
 
-Everything you want to do will be available in the `/game` command.  
-You probably won't even need the following guides, because everything will explain itself when typing out the command.
+- **Start** using `/game start <mode> <center> <world> <players>`
+- **Stop** using `/game stop <id>`
+- Get **info** using `/game info <id>`
+- **List** games using `/game list`.
 
-- **Start** a game using `/game start <mode> <center> <world> <players>`, e.g.:
-```
-/game start cubecraft ~ ~ ~ minecraft:overworld @a
-/game start original 0 -100 20 minecraft:the_nether @a[name=!MarcPG1905]
-```
+> Use `/game list raw` to get a **raw list** which uses `2yiKLf2h1X6CenH1;h1enf2H12yiX6CKL;I8jos1lsvkh57wjs` format or, just `empty`.
 
-- **Stop** a game using `/game stop <id>`, e.g.:
-```
-/game stop 2yiKLf2h1X6CenH1
-```
+### Queue
 
-- Get **info** about a game using `/game info <id>`, e.g.:
-```
-/game info 2yiKLf2h1X6CenH1
-```
+- **Join/leave** using `/queue join/leave`
+- **Do admin stuff** using `/queue admin <operation>`
 
-- **List** all running games using `/game list`. This will also show some info about each of the games (for maximum info, please use `/game info <id>` instead).
-  - Use `/game list raw` to get a **raw list** which uses `2yiKLf2h1X6CenH1;h1enf2H12yiX6CKL;I8jos1lsvkh57wjs` format or, just `empty`. This is useful for creating datapacks in combination with this plugin.
+### Configuration
 
-### Queue System
+- **Get** a value using `/pp-config modify <path> get`
+- **Set** a value using `/pp-config modify <path> set <value>`
+- **Modify** a list using `/pp-config modify <path> add/remove <value>`
+- **Reload** the config using `/pp-config reload`
 
-The queue system is very flexible and has two methods, which can be changed in the configuration:
+## Configuration
 
-- **Command**: Players join the queue using the `/queue` command.
-- **Auto**: Anyone who is not currently playing a game is automatically inside the queue.
+See **Commands** section above for the `/pp-config` command to modify the configuration in-game.
 
-All settings, like minimum/maximum players to start games, the game mode to start, the world and location to use, etc. can all be changed inside the configuration.
+The configuration is designed to be simple and ships with comments, which explain themselves.
 
-## Releases
+By default, the queue is disabled, so it needs to manually be enabled.  
+There are two queue modes: `command` (players use /queue) and `auto` (players are automatically queued).
+
+## Translations
+
+Translations are auto-downloaded from our translation server; if the server is not reachable, the plugin falls back to English. (No sensitive data is sent.)
+
+## Releases & Contact
 
 You can find our official releases on these platforms:
-- Modrinth (Recommended): [modrinth.com/plugin/pillarperil](https://modrinth.com/plugin/pillarperil)
-- GitHub: [github.com/MarcPG1905/PillarPeril/releases](https://github.com/MarcPG1905/PillarPeril/releases)
-- Hangar: [hangar.papermc.io/MarcPG1905/PillarPeril](https://hangar.papermc.io/MarcPG1905/PillarPeril)
 
-Not Recommended (outdated websites):
-- SpigotMC: [spigotmc.org/resources/pillar-peril...](https://www.spigotmc.org/resources/pillar-peril.119457)
-- CurseForge: [curseforge.com/minecraft/bukkit-plugins/pillarperil](https://www.curseforge.com/minecraft/bukkit-plugins/pillarperil)
+**Releases:** [Modrinth](https://modrinth.com/plugin/pillarperil) — [GitHub](https://github.com/MarcPG1905/PillarPeril/releases) — [Hangar](https://hangar.papermc.io/MarcPG1905/PillarPeril)  
+**Legacy (outdated):** [SpigotMC](https://www.spigotmc.org/resources/pillar-peril.119457) — [CurseForge](https://www.curseforge.com/minecraft/bukkit-plugins/pillarperil)
 
-## Contact
-
-### Discord Server
-
-You can join my Discord community and just ping me for a quick response: [MarcPG Dev Discord](https://discord.gg/HvWhqY3kRG)
-
-### Direct Contact
-
-If you don't want to join the Discord server or would like to contact me otherwise, please rely on one of these methods:
-- E-Mail: [marcpg@proton.me](mailto:marcpg@proton.me)
-- Discord: `@marcpg1905`
+**Contact:** Join our community on [Discord](https://discord.gg/HvWhqY3kRG), message me on Discord (`@marcpg1905`) or email me at [marcpg@proton.me](mailto:marcpg@proton.me).
