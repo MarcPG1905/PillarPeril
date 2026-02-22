@@ -30,7 +30,7 @@ This plugin is inspired by pillar-style minigames featured by creators like [Che
 - **Start** using `/game start <mode> <center> <world> <players>`
 - **Stop** using `/game stop <id>`
 - Get **info** using `/game info <id>`
-- **List** games using `/game list`.
+- **List** games using `/game list`
 
 > Use `/game list raw` to get a **raw list** which uses `2yiKLf2h1X6CenH1;h1enf2H12yiX6CKL;I8jos1lsvkh57wjs` format or, just `empty`.
 
