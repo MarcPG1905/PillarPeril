@@ -12,9 +12,7 @@ import com.marcpg.pillarperil.game.util.GameManager
 import com.marcpg.pillarperil.game.util.QueueManager
 import com.marcpg.pillarperil.generation.Buildings
 import com.marcpg.pillarperil.player.PillarPlayer
-import com.marcpg.pillarperil.util.Configuration
-import com.marcpg.pillarperil.util.Constants
-import com.marcpg.pillarperil.util.Ticking
+import com.marcpg.pillarperil.util.*
 import net.kyori.adventure.bossbar.BossBar
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextColor
@@ -96,7 +94,7 @@ abstract class Game(
     var ending = false
 
     open fun init() {
-        this.center.y = Configuration.platformHeight + 1.0
+        world.setGameRuleSafe("DO_IMMEDIATE_RESPAWN", "IMMEDIATE_RESPAWN", true)
 
         bukkitPlayers
             .onEach {
