@@ -265,6 +265,9 @@ ${game.initialPlayers.joinToString { "<dark_gray>| <${if (it in game.players) "g
                                     error("save")
                                 }
 
+                                if (path == "queue.enabled" && value == "true")
+                                    context.feedback(locale.component("config.set.note.queue", color = NamedTextColor.RED))
+
                                 locale.component("config.set.confirm", path, value, color = NamedTextColor.YELLOW)
                             }.getOrElse {
                                 when (it.message) {

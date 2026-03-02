@@ -105,12 +105,12 @@ queue:
   # See below ('modes' section) for list of available game modes.
   mode: original
 
-  # The world to start the game in.
+  # The world to start the game in. Example value could be `game-{id}`.
   #   Available Placeholders:
   #     | -> '{id}'       : started game's ID
   #     | -> '{mode}'     : started game's game-mode
   #     | -> '{players}'  : amount of players in the started game
-  world: "game-{id}"
+  world: "world"
 
   # The location to start the game at.
   # If the y-component is set to -64.0, the game will start at the world spawn.
