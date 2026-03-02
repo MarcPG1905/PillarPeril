@@ -20,6 +20,7 @@ class PillarPlayer(player: Player, val game: Game) : PlayerMinecraftReceiver(pla
     val simpleActionBar: SimpleActionBar? = if (game.info.showActionBar()) game.actionBar?.invoke(this) else null
 
     var kills: Int = 0
+    var deathTime: Int? = null
 
     val initialSnapshot = PlayerSnapshot(player)
 

@@ -26,8 +26,16 @@ import org.bukkit.inventory.ItemType
 abstract class Game(
     val id: String,
     center: Location,
-    private val bukkitPlayers: List<Player>
+    protected val bukkitPlayers: List<Player>,
 ): Ticking {
+    enum class EndingCause {
+        FORCE,
+        TIME_OVER,
+        LAST_STANDING,
+        DRAW,
+        ERROR,
+    }
+
     companion object {
         private val itemNowColor = listOf(TextColor.color(0x00AA22), TextColor.color(0x11FF77))
         private val itemTimeColor = listOf(TextColor.color(0x0022FF), TextColor.color(0x3399FF))
@@ -44,12 +52,35 @@ abstract class Game(
         fun generateId() = Randomizer.generateRandomString(Constants.GAME_ID_LENGTH, Constants.GAME_ID_CHARSET)
     }
 
-    val initialPlayers: List<PillarPlayer> = mutableListOf()
-    private lateinit var initialTarget: ForwardingMinecraftReceiver
-    val players = mutableListOf<PillarPlayer>()
-    val deathTimes = mutableMapOf<PillarPlayer, Int>()
+    // ================ CONSTRUCTION DATA ================
 
     abstract val info: GameInfo
+
+    val center: Location = center.clone().apply { y = Configuration.platformHeight + 1.0 }
+    val world: World = center.world
+    val startingTick: Int = Bukkit.getCurrentTick()
+
+    val initialPlayers: List<PillarPlayer> = mutableListOf() // Only modified at startup, hence hidden mutability.
+    val players = mutableListOf<PillarPlayer>()
+
+    // Initial target consisting of all `initialPlayers`, just used for caching.
+    private val initialTarget: ForwardingMinecraftReceiver by lazy { initialPlayers.toList().receiver() }
+
+    val radius: Double by lazy { initialPlayers.size * Configuration.platformDistanceFactor / Math.TAU }
+
+    lateinit var items: List<ItemType> protected set
+    lateinit var buildings: Buildings private set
+
+    // ==================== GAME STATE ====================
+
+    val timeLeft = Time()
+    val itemCountdown = Time(0, allowNegatives = true)
+
+    private val tickEvents = mutableMapOf<() -> Unit, Int>()
+
+    var ending = false
+
+    // ================= DISPLAY METHODS =================
 
     open val scoreboard: ((PillarPlayer) -> SimpleScoreboard)? = { p -> SimpleScoreboard(p, 5, MiniMessage.miniMessage().deserialize("<bold><gradient:#71CCF8:#FC91EC:#F87171>Pillar Peril"),
         StaticValueScoreboardEntry(p.locale().component("scoreboard.mode").style(info.keyStyle()), component(info.name(p.locale())).style(info.valueStyle)),
@@ -73,25 +104,10 @@ abstract class Game(
         { BossBar.Overlay.NOTCHED_10 }
     ) }
 
-    val center: Location = center.clone()
-    val world: World = center.world
-
-    lateinit var items: List<ItemType>
-
-    lateinit var buildings: Buildings private set
-    val startingTick: Int = Bukkit.getCurrentTick()
-
     var bossBar: SimpleBossBar? = null
         private set
 
-    val timeLeft: Time = Time()
-
-    var itemCountdown: Time = Time(0, allowNegatives = true)
-        private set
-
-    private val tickEvents = mutableMapOf<() -> Unit, Int>()
-
-    var ending = false
+    // =============== OVERRIDABLE METHODS ===============
 
     open fun init() {
         world.setGameRuleSafe("DO_IMMEDIATE_RESPAWN", "IMMEDIATE_RESPAWN", true)
@@ -110,7 +126,6 @@ abstract class Game(
                 (initialPlayers as MutableList) += it
                 players += it
             }
-        initialTarget = initialPlayers.toList().receiver()
 
         items = Registry.ITEM.filter { it != ItemType.AIR && world.isEnabled(it) && info.additionalFilter(it) }.toList()
 
@@ -131,8 +146,10 @@ abstract class Game(
 
     open fun addItem(player: PillarPlayer) = player.giveItems(items)
 
-    fun info(msg: String) = PillarPeril.LOG.info("[${Constants.GAME_LOG_PREFIX}$id] $msg")
-    fun warn(msg: String) = PillarPeril.LOG.warn("[${Constants.GAME_LOG_PREFIX}$id] $msg")
+    // ================= UTILITY METHODS =================
+
+    protected fun info(msg: String) = PillarPeril.LOG.info("[${Constants.GAME_LOG_PREFIX}$id] $msg")
+    protected fun warn(msg: String) = PillarPeril.LOG.warn("[${Constants.GAME_LOG_PREFIX}$id] $msg")
 
     protected fun addTickEvent(interval: Time, event: () -> Unit) = addTickEvent(interval.get() * 20L, event)
 
@@ -150,21 +167,23 @@ abstract class Game(
         return null
     }
 
+    // ================ GAME-LOGIC METHODS ================
+
     fun eliminate(player: PillarPlayer) {
         if (ending || player !in players) return
 
         players -= player
         info("$player got eliminated.")
 
-        deathTimes[player] = Bukkit.getCurrentTick()
+        player.deathTime = Bukkit.getCurrentTick()
 
         val win = players.size <= 1
         val winners = players.toList()
 
         bukkitRunLater(19) { // 0.95s / 950ms
             if (!ending && win) {
-                val lastDeath = deathTimes.maxOf { it.value }
-                val drawWinners = deathTimes.filter { it.value + 19 >= lastDeath }.keys.toList()
+                val lastDeath = initialPlayers.mapNotNull { it.deathTime }.max()
+                val drawWinners = initialPlayers.filter { (it.deathTime ?: Int.MIN_VALUE) + 19 >= lastDeath }
 
                 if (Configuration.enableDraws && players.isEmpty() && drawWinners.isNotEmpty()) {
                     end(EndingCause.DRAW, drawWinners)
@@ -203,14 +222,7 @@ abstract class Game(
         }
 
         tickEvents.filter { tick.isInInterval(startingTick, it.value) }.forEach { it.key() }
-    }
 
-    enum class EndingCause {
-        FORCE,
-        TIME_OVER,
-        LAST_STANDING,
-        DRAW,
-        ERROR,
     }
 
     fun end(cause: EndingCause, winners: List<PillarPlayer> = listOf()) {
@@ -219,41 +231,26 @@ abstract class Game(
 
         for (p in initialPlayers) {
             when (cause) {
-                EndingCause.FORCE -> {
-                    p.showTitle(Title.title(
-                        p.locale().component("info.end.force.title", color = NamedTextColor.YELLOW),
-                        p.locale().component("info.end.force.subtitle", color = NamedTextColor.RED),
-                    ))
-                    warn("Stopped game forcefully.")
-                }
-                EndingCause.TIME_OVER -> {
-                    p.showTitle(Title.title(
-                        p.locale().component("info.end.time-over.title", color = NamedTextColor.GREEN),
-                        p.locale().component("info.end.time-over.subtitle", color = NamedTextColor.YELLOW),
-                    ))
-                    info("Stopped game because the time is up.")
-                }
-                EndingCause.LAST_STANDING -> {
-                    p.showTitle(Title.title(
-                        p.locale().component("info.end.last-standing.title", winners.joinToString(" & "), color = NamedTextColor.GREEN),
-                        p.locale().component("info.end.last-standing.subtitle", winners.sumOf { it.kills }.toString(), color = NamedTextColor.YELLOW),
-                    ))
-                    info("Stopped game because ${winners.joinToString()} won.")
-                }
-                EndingCause.DRAW -> {
-                    p.showTitle(Title.title(
-                        p.locale().component("info.end.draw.title", color = NamedTextColor.GREEN),
-                        p.locale().component("info.end.draw.subtitle", winners.joinToString(" & "), color = NamedTextColor.YELLOW),
-                    ))
-                    info("Stopped game because ${winners.joinToString(" & ")} died at the same time, resulting in a draw.")
-                }
-                EndingCause.ERROR -> {
-                    p.showTitle(Title.title(
-                        component("Nobody wins!", color = NamedTextColor.RED),
-                        component("An error occurred, resulting in no winner.", color = NamedTextColor.GRAY),
-                    ))
-                    error("Stopped game because ${winners.joinToString()} of an error. Error: #001")
-                }
+                EndingCause.FORCE -> p.showTitle(Title.title(
+                    p.locale().component("info.end.force.title", color = NamedTextColor.YELLOW),
+                    p.locale().component("info.end.force.subtitle", color = NamedTextColor.RED)
+                ))
+                EndingCause.TIME_OVER -> p.showTitle(Title.title(
+                    p.locale().component("info.end.time-over.title", color = NamedTextColor.GREEN),
+                    p.locale().component("info.end.time-over.subtitle", color = NamedTextColor.YELLOW)
+                ))
+                EndingCause.LAST_STANDING -> p.showTitle(Title.title(
+                    p.locale().component("info.end.last-standing.title", winners.joinToString(" & "), color = NamedTextColor.GREEN),
+                    p.locale().component("info.end.last-standing.subtitle", winners.sumOf { it.kills }.toString(), color = NamedTextColor.YELLOW)
+                ))
+                EndingCause.DRAW -> p.showTitle(Title.title(
+                    p.locale().component("info.end.draw.title", color = NamedTextColor.GREEN),
+                    p.locale().component("info.end.draw.subtitle", winners.joinToString(" & "), color = NamedTextColor.YELLOW)
+                ))
+                EndingCause.ERROR -> p.showTitle(Title.title(
+                    component("Nobody wins!", color = NamedTextColor.RED),
+                    component("An error occurred, resulting in no winner.", color = NamedTextColor.GRAY)
+                ))
             }
 
             p.sendMessage(component("=== ").append(p.locale().component("info.end.time-over.stats")).append(component(" ===")).color(NamedTextColor.GREEN).decorate(TextDecoration.BOLD))
@@ -261,6 +258,15 @@ abstract class Game(
                 p.sendMessage(miniMessage("<dark_gray>${i + 1}. <gray>${sorted.player.name} <dark_gray>(<gold>${sorted.kills}<red>⚔<dark_gray>)"))
             }
         }
+
+        when (cause) {
+            EndingCause.FORCE -> warn("Stopped game forcefully.")
+            EndingCause.TIME_OVER -> info("Stopped game because the time is up.")
+            EndingCause.LAST_STANDING -> info("Stopped game because ${winners.joinToString()} won.")
+            EndingCause.DRAW -> info("Stopped game because ${winners.joinToString(" & ")} died at the same time, resulting in a draw.")
+            EndingCause.ERROR -> error("Stopped game due to an error. Error code: #001")
+        }
+
         Configuration.endingCommands.forEach { PillarPeril.sendCommand(it(
             "id" to id,
             "mode" to info.mode.gameInfo.namespace,
@@ -271,10 +277,10 @@ abstract class Game(
             "y" to center.y,
             "z" to center.z,
         )) }
-        clear()
+        cleanup()
     }
 
-    fun clear() {
+    private fun cleanup() {
         GameManager.remove(this)
         initialPlayers.forEach { it.clear(true) }
         buildings.reset()

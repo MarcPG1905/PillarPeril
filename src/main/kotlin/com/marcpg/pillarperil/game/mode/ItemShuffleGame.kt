@@ -19,7 +19,7 @@ class ItemShuffleGame(id: String, center: Location, bukkitPlayers: List<Player>)
         addTickEvent(Time(gameInfo.itemCountdown())) {
             players.forEach { p ->
                 p.player.inventory.clear()
-                p.giveItems(items, differentItems = 10)
+                p.giveItems(items, differentItems = 9)
             }
         }
 

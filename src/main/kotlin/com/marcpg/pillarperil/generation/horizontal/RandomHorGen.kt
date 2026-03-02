@@ -3,7 +3,6 @@ package com.marcpg.pillarperil.generation.horizontal
 import com.marcpg.pillarperil.game.Game
 import com.marcpg.pillarperil.generation.HorGenCompanion
 import com.marcpg.pillarperil.generation.HorizontalGen
-import com.marcpg.pillarperil.util.Configuration
 import org.bukkit.Location
 
 class RandomHorGen(game: Game) : HorizontalGen(game) {
@@ -15,10 +14,9 @@ class RandomHorGen(game: Game) : HorizontalGen(game) {
     val players = game.players.size
 
     override fun generate(): List<Location> {
-        val radius = players * Configuration.platformDistanceFactor / Math.TAU * 1.2
+        val radius = game.radius * 1.2
 
         val candidates = mutableSetOf<Location>()
-
         for (x in -radius.toInt() until radius.toInt()) {
             for (z in -radius.toInt() until radius.toInt()) {
                 val loc = game.center.clone().add(x.toDouble(), 0.0, z.toDouble())

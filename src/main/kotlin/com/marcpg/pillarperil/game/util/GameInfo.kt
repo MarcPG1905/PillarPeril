@@ -31,6 +31,7 @@ data class GameInfo(
     val horGen: () -> HorGenCompanion<*> = { Configuration.provider.getString("modes.$namespace.generator.horizontal", "circular").toHorGen() },
     val vertGen: () -> VertGenCompanion<*> = { Configuration.provider.getString("modes.$namespace.generator.vertical", "pillar").toVertGen() },
 
+    // Additional filter applied to the receivable item list:
     val additionalFilter: ((ItemType) -> Boolean) = { true },
 ) {
     val keyStyle: () -> Style = { Style.style(accentColor(), TextDecoration.BOLD) }

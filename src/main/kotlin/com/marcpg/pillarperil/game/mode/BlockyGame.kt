@@ -24,7 +24,9 @@ class BlockyGame(id: String, center: Location, bukkitPlayers: List<Player>) : Ga
 
     override val info: GameInfo = gameInfo
 
-    init {
+    override fun init() {
+        super.init()
+
         bukkitPlayers.forEach { it.inventory.addItem(ItemStack.of(attackItems.random())) }
     }
 }
