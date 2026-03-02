@@ -5,7 +5,7 @@ name: PillarPeril
 description: Open-Source & customizable "Pillars of Fortune"-like game — spawn on bedrock pillars, get random items, and dominate!
 
 ### Build Version ###
-version: 0.2.0
+version: 0.2.1
 
 ### Main Class ###
 main: com.marcpg.pillarperil.PillarPeril
