@@ -9,15 +9,15 @@
 The special part about this plugin is the high *customizability* and *a bunch of different modes*!    
 Here are the different modes that are available, with each of them being fully customizable:
 
-| Name           | Cooldown   | Time | Pillars  | Description                                  |
-|----------------|------------|------|----------|----------------------------------------------|
-| Blocky         | 10s        | 4m   | Circular | Starts with a weapon; only blocks are given. |
-| Chaos          | 3s         | 8m   | Random   | No filters, randomized pillars, fast item cooldown.                            |
-| Classic        | 5s         | 5m   | Circular | Classic rules, inspired by CubeCraft.        |
-| Item-Only      | 10s        | 10m  | Circular | Only items (no blocks): long & tough.        |
-| Item-Shuffle   | 10s        | 5m   | Circular | Items replaced every 10s (9 new items).      |
-| Original       | 5s         | 5m   | Circular | Original gameplay as seen in early videos.   |
-| Player-Shuffle | 10s        | 5m   | Circular | All players randomly swapped every 10s.      |
+| Name           | Cooldown | Time | Pillars  | Description                                         |
+|----------------|----------|------|----------|-----------------------------------------------------|
+| Blocky         | 10s      | 4m   | Circular | Starts with a weapon; only blocks are given.        |
+| Chaos          | 3s       | 8m   | Random   | No filters, randomized pillars, fast item cooldown. |
+| Classic        | 5s       | 5m   | Circular | Classic rules, inspired by CubeCraft.               |
+| Item-Only      | 10s      | 10m  | Circular | Only items (no blocks): long & tough.               |
+| Item-Shuffle   | 10s      | 5m   | Circular | Items replaced every 10s (9 new items).             |
+| Original       | 5s       | 5m   | Circular | Original gameplay as seen in early videos.          |
+| Player-Shuffle | 10s      | 5m   | Circular | All players randomly swapped every 10s.             |
 
 ## Inspiration
 

@@ -20,7 +20,7 @@ object Registry {
     val modes = listOf(
         BlockyGame,
         ChaosGame,
-        CubeCraftGame,
+        ClassicGame,
         ItemOnlyGame,
         ItemShuffleGame,
         OriginalGame,

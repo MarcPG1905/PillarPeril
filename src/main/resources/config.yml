@@ -153,13 +153,13 @@ modes:
     visual:
       color: "#FFFFFF" # The theme color (as hex code) of the game. Will be used in the scoreboard for example.
       show-scoreboard: true # Whether to show a scoreboard with some info or not.
-      show-actionbar: false # Whether to show an actionbar with the the item countdown or not.
+      show-actionbar: false # Whether to show an actionbar with the item countdown or not.
       show-bossbar: false # Whether to show a bossbar with the item countdown or not.
     generator:
       horizontal: circular # The horizontal generator, so the layout of vertical pillars/blocks. Either "circular" or "random".
       vertical: pillar # The vertical generator, so the type of platform. Either "pillar" or "block".
 
-  # Blocky Mode - Gives you a random weapon at the start, but you only get blocks randomly.
+  # Blocky Mode - Starts with a weapon; only blocks are given.
   blocky:
     cooldown: 10
     time-limit: 4min
@@ -172,7 +172,7 @@ modes:
       horizontal: circular
       vertical: pillar
 
-  # Chaos Mode - No item filters, pillars are randomized and the item cooldown is very low.
+  # Chaos Mode - No filters, randomized pillars, fast item cooldown.
   chaos:
     cooldown: 3
     time-limit: 8min
@@ -185,8 +185,8 @@ modes:
       horizontal: random
       vertical: pillar
 
-  # CubeCraft Mode - Game mode with the same rules and properties as CubeCraft's "Pillars of Fortune".
-  cubecraft:
+  # Classic Mode - Classic rules, inspired by CubeCraft.
+  classic:
     cooldown: 5
     time-limit: 5min
     visual:
@@ -198,7 +198,7 @@ modes:
       horizontal: circular
       vertical: pillar
 
-  # Item-Only Mode - You only get items and no blocks, which makes the game very long and hard.
+  # Item-Only Mode - Only items (no blocks): long & tough.
   item-only:
     cooldown: 10
     time-limit: 10min
@@ -211,7 +211,7 @@ modes:
       horizontal: circular
       vertical: pillar
 
-  # Item Shuffle Mode - Every `cooldown` seconds, you lose your items and get 10 random new ones.
+  # Item Shuffle Mode - Items replaced every 10s (9 new items).
   item-shuffle:
     cooldown: 10
     time-limit: 5min
@@ -224,7 +224,7 @@ modes:
       horizontal: circular
       vertical: pillar
 
-  # Original Mode - The original mode as seen in CheapPickle's videos.
+  # Original Mode - Original gameplay as seen in early videos.
   original:
     cooldown: 5
     time-limit: 5min
@@ -237,7 +237,7 @@ modes:
       horizontal: circular
       vertical: pillar
 
-  # Player Shuffle Mode - Every `cooldown` seconds, all player's positions are randomly swapped.
+  # Player Shuffle Mode - All players randomly swapped every 10s.
   player-shuffle:
     cooldown: 10
     time-limit: 5min

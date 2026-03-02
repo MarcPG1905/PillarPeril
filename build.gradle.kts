@@ -10,7 +10,7 @@ plugins {
 
 group = "com.marcpg.pillarperil"
 version = "0.2.0"
-description = "Open-Source and Customizable version of CubeCraft's \"Pillars of Fortune\" game mode, but even better!"
+description = "Open-Source & customizable \"Pillars of Fortune\"-like game — spawn on bedrock pillars, get random items, and dominate!"
 
 kotlin {
     jvmToolchain(21)
