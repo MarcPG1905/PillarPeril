@@ -142,6 +142,21 @@ queue:
     - "/say Starting game at {x}/{y}/{z}..." # <- example, you can freely remove this and leave the list empty.
 
 
+## Sound Effects ##
+sound-effects:
+
+  # Controls all sound effects. If this is set to 'false', no sound effects will be played at all, ignoring all configuration below.
+  enabled: true
+
+  # The time in seconds when a cooldown will start playing.
+  # Set to 0 to disable.
+  # Default: 3
+  cooldown: 3
+
+  # Played when you receive an item.
+  item: true
+
+
 ## Default Game Modes ##
 # Allows you to configure various properties of the default game modes.
 modes:

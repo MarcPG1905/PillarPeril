@@ -41,6 +41,10 @@ object Configuration : Config(PaperConfigProvider()) {
     var queuePreCommands by custom("queue.pre-commands", PPEntryTypes.placeholder.list, listOf())
     var queuePostCommands by custom("queue.post-commands", PPEntryTypes.placeholder.list, listOf())
 
+    var soundEffectsEnabled by boolean("sound-effects.enabled", true)
+    var soundEffectsCooldown by int("sound-effects.cooldown", 3)
+    var soundEffectsItem by boolean("sound-effects.item", true)
+
     var disableFastStats by boolean("disable-faststats", false)
 
     val deathHeight get() = platformHeight - maxFall

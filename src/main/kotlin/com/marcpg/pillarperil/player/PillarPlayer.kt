@@ -9,7 +9,9 @@ import com.marcpg.pillarperil.game.Game
 import com.marcpg.pillarperil.game.util.QueueManager
 import com.marcpg.pillarperil.util.Configuration
 import com.marcpg.pillarperil.util.QueueMethod
+import com.marcpg.pillarperil.util.playSoundSafe
 import org.bukkit.Bukkit
+import org.bukkit.Sound
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemType
 
@@ -30,6 +32,7 @@ class PillarPlayer(player: Player, val game: Game) : PlayerMinecraftReceiver(pla
         repeat(differentItems) {
             player.inventory.addItem(available.random().createItemStack())
         }
+        player.playSoundSafe(Sound.ENTITY_ITEM_PICKUP, 0.75f) { Configuration.soundEffectsItem }
     }
 
     fun clear(display: Boolean = false) {

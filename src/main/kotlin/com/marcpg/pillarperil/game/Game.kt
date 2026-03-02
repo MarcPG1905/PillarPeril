@@ -191,6 +191,10 @@ abstract class Game(
             if (itemCountdown.get() <= 0) {
                 players.forEach { addItem(it) }
                 itemCountdown.set(info.itemCountdown())
+            } else {
+                players.playSoundSafe(Sound.UI_BUTTON_CLICK, 0.2f, 2.0f) {
+                    itemCountdown.get() < Configuration.soundEffectsCooldown
+                }
             }
 
             timeLeft.dec()
