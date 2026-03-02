@@ -10,6 +10,7 @@ import com.marcpg.pillarperil.game.util.GameManager
 import com.marcpg.pillarperil.game.util.QueueManager
 import com.marcpg.pillarperil.util.Configuration
 import com.marcpg.pillarperil.util.QueueMethod
+import com.marcpg.pillarperil.util.trackToFastStats
 import com.mojang.brigadier.LiteralMessage
 import com.mojang.brigadier.arguments.StringArgumentType
 import io.papermc.paper.command.brigadier.CommandSourceStack
@@ -48,6 +49,7 @@ object Commands {
                                     Registry.modes[mode]!!.gameConstructor(id, center, players).init()
                                 }.onFailure {
                                     PillarPeril.LOG.error("Could not start game", it)
+                                    it.trackToFastStats()
                                     return@action source.locale().component("games.start.internal_error", color = NamedTextColor.RED)
                                 }
                                 return@action source.locale().component("games.start.success", id, color = NamedTextColor.GREEN)
@@ -256,8 +258,12 @@ ${game.initialPlayers.joinToString { "<dark_gray>| <${if (it in game.players) "g
                                     else -> error("unknown")
                                 }
 
-                                runCatching { Configuration.save() }
-                                    .onFailure { error("save") }
+                                runCatching {
+                                    Configuration.save()
+                                }.onFailure {
+                                    it.trackToFastStats()
+                                    error("save")
+                                }
 
                                 locale.component("config.set.confirm", path, value, color = NamedTextColor.YELLOW)
                             }.getOrElse {
@@ -291,6 +297,7 @@ ${game.initialPlayers.joinToString { "<dark_gray>| <${if (it in game.players) "g
                                 runCatching {
                                     Configuration.save()
                                 }.onFailure {
+                                    it.trackToFastStats()
                                     return@action locale.component("config.error", color = NamedTextColor.RED)
                                 }
 

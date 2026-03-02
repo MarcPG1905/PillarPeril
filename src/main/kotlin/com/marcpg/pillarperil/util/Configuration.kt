@@ -14,8 +14,10 @@ object Configuration : Config(PaperConfigProvider()) {
     override val versionHistory: List<ConfigVersion> = listOf(
         ConfigVersion(id = 2),
         ConfigVersion(id = 3),
+        ConfigVersion(id = 4),
     )
-    override val version: Int = 3
+
+    override val version: Int = 4
 
     var platformHeight by double("platform-height", 200.0)
     var maxFall by double("max-fall", 25.0)
@@ -38,6 +40,8 @@ object Configuration : Config(PaperConfigProvider()) {
     var queueCord by custom("queue.location", ExtendedEntryTypes.cordMap, Cord(0.0, -64.0, 0.0))
     var queuePreCommands by custom("queue.pre-commands", PPEntryTypes.placeholder.list, listOf())
     var queuePostCommands by custom("queue.post-commands", PPEntryTypes.placeholder.list, listOf())
+
+    var disableFastStats by boolean("disable-faststats", false)
 
     val deathHeight get() = platformHeight - maxFall
     val spawnLocation get() = if (spawnCord.y == -64.0) spawnWorld.value!!.spawnLocation else spawnCord.toLocation(spawnWorld.value)

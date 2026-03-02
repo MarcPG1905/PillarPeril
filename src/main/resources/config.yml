@@ -251,6 +251,13 @@ modes:
       vertical: pillar
 
 
+## Disable FastStats Integration ##
+# FastStats sends completely anonymous data about the server's Minecraft version, used game modes, etc.
+# to improve the plugin based on real usage data.
+# If you do not want to send this data, feel free to opt out here, in FastStats' own configuration,
+# or using the `-Dfaststats.enabled=false` JVM flag to disable FastStats globally.
+disable-faststats: false
+
 ## The Configuration Version ##
 # DO NOT MODIFY THIS, OR THE CONFIGURATION WILL LIKELY BREAK OR BE RESET!
-version: 3
+version: 4

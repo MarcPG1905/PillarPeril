@@ -7,8 +7,11 @@ import org.bukkit.entity.Player
 object GameManager {
     val games = mutableMapOf<String, Game>()
 
+    val gamesStartedSinceLastFlush = mutableListOf<String>()
+
     fun add(game: Game) {
         games[game.id] = game
+        gamesStartedSinceLastFlush.add(game.info.namespace)
     }
 
     fun remove(game: Game) {

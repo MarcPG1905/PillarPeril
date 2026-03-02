@@ -20,9 +20,9 @@ repositories {
     mavenLocal()
     mavenCentral()
 
-    maven("https://repo.papermc.io/repository/maven-public/")
-    maven("https://repo.xenondevs.xyz/releases/")
     maven("https://marcpg.com/repo/")
+    maven("https://repo.papermc.io/repository/maven-public/")
+    maven("https://repo.thenextlvl.net/releases/")
 }
 
 private fun DependencyHandler.implementationOrFile(notation: String, fallback: String) {
@@ -42,6 +42,8 @@ dependencies {
 
     implementationOrFile("com.marcpg:ktlibpg-platform-paper:2.0.2", "libs/ktlibpg-platform-paper-2.0.2.jar")
 
+    implementation("dev.faststats.metrics:bukkit:0.15.0")
+
     compileOnly(kotlin("stdlib"))
 }
 
@@ -58,5 +60,6 @@ tasks {
     }
     shadowJar {
         archiveClassifier.set("")
+        relocate("dev.faststats", "$group.libs.faststats")
     }
 }
