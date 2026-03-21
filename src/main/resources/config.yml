@@ -83,7 +83,7 @@ player-spawn:
 queue:
 
   # Whether the queue module is enabled or not.
-  enabled: false
+  enabled: true
 
   # The minimum amount of players needed to start a game.
   min-players: 3
@@ -275,4 +275,4 @@ disable-faststats: false
 
 ## The Configuration Version ##
 # DO NOT MODIFY THIS, OR THE CONFIGURATION WILL LIKELY BREAK OR BE RESET!
-version: 4
+version: 5
