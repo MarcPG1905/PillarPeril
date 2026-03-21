@@ -1,11 +1,11 @@
 plugins {
-    id("java")
+    java
 
-    kotlin("jvm") version "2.2.20"
+    alias(libs.plugins.kotlin)
+    alias(libs.plugins.shadow)
 
-    id("com.gradleup.shadow") version "9.3.0"
-    id("xyz.jpenilla.run-paper") version "3.0.2"
-    id("io.papermc.paperweight.userdev") version "2.0.0-beta.18"
+    alias(libs.plugins.jpnilla.runPaper)
+    alias(libs.plugins.paperweight.userdev)
 }
 
 group = "com.marcpg.pillarperil"
@@ -22,11 +22,11 @@ repositories {
 
     maven("https://marcpg.com/repo/")
     maven("https://repo.papermc.io/repository/maven-public/")
-    maven("https://repo.thenextlvl.net/releases/")
+    maven("https://repo.faststats.dev/releases/")
 }
 
-private fun DependencyHandler.implementationOrFile(notation: String, fallback: String) {
-    val dep = dependencies.create(notation)
+private fun DependencyHandler.implementationOrFile(notation: Provider<MinimalExternalModuleDependency>, fallback: String) {
+    val dep = notation.get()
     val config = configurations.detachedConfiguration(dep)
 
     try {
@@ -38,13 +38,11 @@ private fun DependencyHandler.implementationOrFile(notation: String, fallback: S
 }
 
 dependencies {
-    paperweight.paperDevBundle("1.21.8-R0.1-SNAPSHOT")
-
-    implementationOrFile("com.marcpg:ktlibpg-platform-paper:2.0.2", "libs/ktlibpg-platform-paper-2.0.2.jar")
-
-    implementation("dev.faststats.metrics:bukkit:0.15.0")
-
     compileOnly(kotlin("stdlib"))
+    paperweight.paperDevBundle(libs.versions.paper.get())
+
+    implementationOrFile(libs.ktlibpg.paper, "libs/ktlibpg-platform-paper-2.0.2.jar")
+    implementation(libs.faststats)
 }
 
 tasks {

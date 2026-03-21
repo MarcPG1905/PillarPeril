@@ -11,7 +11,7 @@ import com.marcpg.pillarperil.util.Configuration
 import dev.faststats.bukkit.BukkitMetrics
 import dev.faststats.core.ErrorTracker
 import dev.faststats.core.SimpleMetrics
-import dev.faststats.core.chart.Chart
+import dev.faststats.core.data.Metric
 import org.bukkit.Bukkit
 import java.net.URI
 
@@ -48,8 +48,8 @@ class PillarPeril : KotlinPlugin(Companion) {
             metrics = BukkitMetrics.factory()
                 .token("7dd02fd8606bfaa736aa6911e94edca7")
 
-                .addChart(Chart.number("games_running") { GameManager.games.size })
-                .addChart(Chart.stringArray("games_started") { GameManager.gamesStartedSinceLastFlush.toTypedArray() })
+                .addMetric(Metric.number("games_running") { GameManager.games.size })
+                .addMetric(Metric.stringArray("games_started") { GameManager.gamesStartedSinceLastFlush.toTypedArray() })
 
                 .onFlush { GameManager.gamesStartedSinceLastFlush.clear() }
 

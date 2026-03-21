@@ -1,0 +1,27 @@
+[versions]
+
+# ===== Gradle Plugins =====
+kotlin = "2.3.0"
+shadow = "9.3.0"
+jpnilla-run = "3.0.2"
+paperweight-userdev = "2.0.0-beta.18"
+
+# ===== Dependencies =====
+ktlibpg = "2.0.2"
+faststats = "0.18.1"
+paper = "1.21.8-R0.1-SNAPSHOT"
+
+
+[libraries]
+
+ktlibpg-paper = { module = "com.marcpg:ktlibpg-platform-paper", version.ref = "ktlibpg" }
+faststats = { module = "dev.faststats.metrics:bukkit", version.ref = "faststats" }
+
+
+[plugins]
+
+kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
+
+jpnilla-runPaper = { id = "xyz.jpenilla.run-paper", version.ref = "jpnilla-run" }
+paperweight-userdev = { id = "io.papermc.paperweight.userdev", version.ref = "paperweight-userdev" }
