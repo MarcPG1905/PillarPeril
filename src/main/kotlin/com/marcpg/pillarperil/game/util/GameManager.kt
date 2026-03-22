@@ -26,6 +26,19 @@ object GameManager {
     fun isInGame(player: Player, onlyAlive: Boolean = true): Boolean =
         games.any { it.value.player(player, onlyAlive) != null }
 
+    fun isPartOfGame(entity: Entity): Boolean {
+        return if (entity is Player) {
+            isInGame(entity)
+        } else {
+            games.any { entity in it.value.buildings.spawnedEntities }
+        }
+    }
+
+    fun isWithinGame(location: Location): Boolean {
+        val world = location.world
+        return games.any { it.value.world == world && it.value.center.distance(location) < it.value.buildings.placedRadius * 2 }
+    }
+
     fun getClosestGame(location: Location): Game? {
         val world = location.world
         return games.values

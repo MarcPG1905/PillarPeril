@@ -2,13 +2,18 @@ package com.marcpg.pillarperil.generation
 
 import com.marcpg.pillarperil.game.Game
 import org.bukkit.Location
+import org.bukkit.block.BlockType
 import org.bukkit.block.data.BlockData
+import org.bukkit.entity.Entity
+import org.bukkit.entity.Player
 
 class Buildings(
     val game: Game,
     val horizontalGen: HorizontalGen,
     val verticalGen: VerticalGen,
 ) {
+    var placedRadius = 0.0
+
     val initialBlocks = mutableMapOf<Location, BlockData>()
     val spawnedEntities = mutableListOf<Entity>()
 
@@ -22,6 +27,10 @@ class Buildings(
     fun registerPlace(location: Location, data: BlockData = location.block.blockData) {
         if (location !in initialBlocks) {
             initialBlocks[location.clone()] = data
+
+            val distance = location.distance(game.center)
+            if (distance > placedRadius)
+                placedRadius = distance
         }
     }
 
