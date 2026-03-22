@@ -42,7 +42,6 @@ abstract class Game(
         private val itemTimeColor = listOf(TextColor.color(0x0022FF), TextColor.color(0x3399FF))
 
         fun getColor(left: Float): BossBar.Color = when {
-            left < 0.1 -> BossBar.Color.WHITE
             left < 0.2 -> BossBar.Color.BLUE
             left < 0.4 -> BossBar.Color.GREEN
             left < 0.6 -> BossBar.Color.YELLOW
@@ -77,6 +76,9 @@ abstract class Game(
     val timeLeft = Time()
     val itemCountdown = Time(0, allowNegatives = true)
 
+    val itemCountdownPercentage: Float
+        get() = (itemCountdown.get().toFloat() / (info.itemCountdown().toFloat() - 1)).coerceIn(0.0f, 1.0f)
+
     private val tickEvents = mutableMapOf<() -> Unit, Int>()
 
     var ending = false
@@ -100,8 +102,8 @@ abstract class Game(
     open val bossBarCreator: () -> SimpleBossBar = { SimpleBossBar(target(false),
         20,
         { component("=== ${itemCountdown.oneUnitFormatted} ===").style(info.keyStyle()) },
-        { (itemCountdown.get().toFloat() / info.itemCountdown().toFloat()) },
-        { getColor(itemCountdown.get().toFloat() / info.itemCountdown().toFloat()) },
+        { itemCountdownPercentage },
+        { getColor(itemCountdownPercentage) },
         { BossBar.Overlay.NOTCHED_10 }
     ) }
 
@@ -217,16 +219,16 @@ abstract class Game(
         if (ending) return
 
         if (tick.isSecond(startingTick)) {
-            itemCountdown.dec()
             if (itemCountdown.get() <= 0) {
                 modifiers.forEach { it.onItemCycle() }
                 players.forEach { addItem(it) }
                 itemCountdown.set(info.itemCountdown())
             } else {
                 players.playSoundSafe(Sound.UI_BUTTON_CLICK, 0.2f, 2.0f) {
-                    itemCountdown.get() < Configuration.soundEffectsCooldown
+                    itemCountdown.get() <= Configuration.soundEffectsCooldown
                 }
             }
+            itemCountdown.dec()
 
             timeLeft.dec()
             if (timeLeft.get() <= 0)
