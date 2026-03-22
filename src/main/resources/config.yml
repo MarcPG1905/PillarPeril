@@ -18,6 +18,12 @@
 platform-height: 200
 
 
+## Platform Material ##
+# The material the platforms are made of.
+# Default: bedrock
+platform-material: bedrock
+
+
 ## Max Fall Distance ##
 # The maximum distance you can fall from the platforms until you die.
 # This number will be extracted from the pillar height to determine the y-coordinate you die at.

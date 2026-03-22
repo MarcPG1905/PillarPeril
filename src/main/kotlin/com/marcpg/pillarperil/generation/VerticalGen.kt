@@ -1,16 +1,13 @@
 package com.marcpg.pillarperil.generation
 
 import com.marcpg.pillarperil.game.Game
-import org.bukkit.Location
-import org.bukkit.Material
+import com.marcpg.pillarperil.util.Configuration
 
 abstract class VerticalGen(val game: Game) {
     abstract fun generate(x: Double, z: Double)
 
     protected fun execPlace(x: Double, y: Double, z: Double) {
-        val loc = Location(game.world, x, y, z)
-        game.buildings.place(loc)
-        loc.block.type = Material.BEDROCK
+        game.buildings.placeBlock(x, y, z, Configuration.platformMaterial)
     }
 }
 

@@ -8,18 +8,23 @@ import com.marcpg.pillarperil.PillarPeril
 import com.marcpg.pillarperil.Registry
 import com.marcpg.pillarperil.game.mode.OriginalGame
 import org.bukkit.GameMode
+import org.bukkit.Keyed
+import org.bukkit.NamespacedKey
 import org.bukkit.World
+import org.bukkit.block.BlockType
 
 object Configuration : Config(PaperConfigProvider()) {
     override val versionHistory: List<ConfigVersion> = listOf(
         ConfigVersion(id = 2),
         ConfigVersion(id = 3),
         ConfigVersion(id = 4),
+        ConfigVersion(id = 5),
     )
 
-    override val version: Int = 4
+    override val version: Int = 5
 
     var platformHeight by double("platform-height", 200.0)
+    var platformMaterial by custom("platform-material", PPEntryTypes.minecraftRegistry(org.bukkit.Registry.BLOCK), BlockType.BEDROCK)
     var maxFall by double("max-fall", 25.0)
     var platformDistanceFactor by double("platform-distance-factor", 10.0)
     var enableDraws by boolean("enable-draws")
@@ -98,6 +103,12 @@ object PPEntryTypes {
         BaseEntryTypes.string,
         { entries()[it]!! },
         { entries().entries.first { e -> e.value == it }.key }
+    )
+
+    fun <T : Keyed> minecraftRegistry(registry: org.bukkit.Registry<T>) = CustomEntryType(
+        BaseEntryTypes.string,
+        { NamespacedKey.fromString(it)?.let { key -> registry.get(key) } },
+        { registry.getKeyOrThrow(it).asMinimalString() }
     )
 }
 
