@@ -66,7 +66,7 @@ abstract class Game(
     // Initial target consisting of all `initialPlayers`, just used for caching.
     private val initialTarget: ForwardingMinecraftReceiver by lazy { initialPlayers.toList().receiver() }
 
-    val radius: Double by lazy { initialPlayers.size * Configuration.platformDistanceFactor / Math.TAU }
+    var radius: Double = 0.0
 
     lateinit var items: List<ItemType> protected set
     lateinit var buildings: Buildings private set
@@ -130,6 +130,8 @@ abstract class Game(
         items = Registry.ITEM.filter { it != ItemType.AIR && world.isEnabled(it) && info.additionalFilter(it) }.toList()
 
         buildings = Buildings(this, info.horGen().genConstructor(this), info.vertGen().genConstructor(this))
+        radius = initialPlayers.size * Configuration.platformDistanceFactor / Math.TAU
+
         buildings.generate().forEachIndexed { i, l -> players[i].teleport(l.clone().add(0.0, 1.0, 0.0).toCenterLocation()) }
 
         if (info.showBossBar()) {

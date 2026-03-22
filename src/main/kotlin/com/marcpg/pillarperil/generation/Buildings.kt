@@ -11,8 +11,8 @@ class Buildings(
 ) {
     val initialBlocks: MutableMap<Location, BlockData> = mutableMapOf()
 
-    fun place(location: Location, data: BlockData = location.block.blockData) {
         if (location !in initialBlocks)
+    fun registerPlace(location: Location, data: BlockData = location.block.blockData) {
             initialBlocks[location.clone()] = data
     }
 

@@ -14,13 +14,13 @@ class RandomHorGen(game: Game) : HorizontalGen(game) {
     val players = game.players.size
 
     override fun generate(): List<Location> {
-        val radius = game.radius * 1.2
+        game.radius *= 1.2
 
         val candidates = mutableSetOf<Location>()
-        for (x in -radius.toInt() until radius.toInt()) {
-            for (z in -radius.toInt() until radius.toInt()) {
+        for (x in -game.radius.toInt() until game.radius.toInt()) {
+            for (z in -game.radius.toInt() until game.radius.toInt()) {
                 val loc = game.center.clone().add(x.toDouble(), 0.0, z.toDouble())
-                if (game.center.distance(loc) <= radius)
+                if (game.center.distance(loc) <= game.radius)
                     candidates += loc
             }
         }

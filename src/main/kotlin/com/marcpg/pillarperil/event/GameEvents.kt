@@ -50,6 +50,6 @@ object GameEvents : Listener {
     }
 
     private fun modify(player: Player, location: Location, data: BlockData) {
-        GameManager.player(player)?.game?.buildings?.place(location, data)
+        GameManager.player(player)?.game?.buildings?.registerPlace(location, data)
     }
 }
