@@ -25,4 +25,13 @@ object GameManager {
 
     fun isInGame(player: Player, onlyAlive: Boolean = true): Boolean =
         games.any { it.value.player(player, onlyAlive) != null }
+
+    fun getClosestGame(location: Location): Game? {
+        val world = location.world
+        return games.values
+            .filter { it.world == world }
+            .associateBy { it.center.distance(location) }
+            .filter { it.key < it.value.buildings.placedRadius * 2 }
+            .minByOrNull { it.key }?.value
+    }
 }

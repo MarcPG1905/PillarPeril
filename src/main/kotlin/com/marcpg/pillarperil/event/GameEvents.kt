@@ -12,6 +12,7 @@ import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.block.BlockMultiPlaceEvent
 import org.bukkit.event.block.BlockPlaceEvent
+import org.bukkit.event.entity.EntitySpawnEvent
 import org.bukkit.event.player.PlayerBucketEmptyEvent
 import org.bukkit.event.player.PlayerBucketFillEvent
 
@@ -22,6 +23,11 @@ object GameEvents : Listener {
 
         QueueManager.tick(tick)
         GameManager.games.values.toList().forEach { it.tick(tick) }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    fun onEntitySpawn(event: EntitySpawnEvent) {
+        GameManager.getClosestGame(event.location)?.buildings?.registerSpawn(event.entity)
     }
 
     @EventHandler(ignoreCancelled = true)

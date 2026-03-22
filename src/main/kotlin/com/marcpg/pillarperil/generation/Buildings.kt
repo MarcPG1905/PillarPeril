@@ -9,11 +9,25 @@ class Buildings(
     val horizontalGen: HorizontalGen,
     val verticalGen: VerticalGen,
 ) {
-    val initialBlocks: MutableMap<Location, BlockData> = mutableMapOf()
+    val initialBlocks = mutableMapOf<Location, BlockData>()
+    val spawnedEntities = mutableListOf<Entity>()
 
-        if (location !in initialBlocks)
+    fun placeBlock(x: Number, y: Number, z: Number, type: BlockType) = placeBlock(Location(game.world, x.toDouble(), y.toDouble(), z.toDouble()), type)
+
+    fun placeBlock(location: Location, type: BlockType) {
+        registerPlace(location)
+        location.block.setBlockData(type.createBlockData(), false)
+    }
+
     fun registerPlace(location: Location, data: BlockData = location.block.blockData) {
+        if (location !in initialBlocks) {
             initialBlocks[location.clone()] = data
+        }
+    }
+
+    fun registerSpawn(entity: Entity) {
+        if (entity !is Player)
+            spawnedEntities.add(entity)
     }
 
     fun generate(): List<Location> {
@@ -28,5 +42,8 @@ class Buildings(
 
         // Then, force the placement for anything that wasn't properly placed before.
         initialBlocks.forEach { (l, b) -> l.block.setBlockData(b, false) }
+
+        // Kill all entities spawned during this game.
+        spawnedEntities.forEach { it.remove() }
     }
 }
