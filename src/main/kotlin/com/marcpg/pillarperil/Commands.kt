@@ -46,7 +46,8 @@ object Commands {
 
                                 val id = Game.generateId()
                                 runCatching {
-                                    Registry.modes[mode]!!.gameConstructor(id, center, players).init()
+                                    // TODO: Supply list of modifiers here:
+                                    Registry.modes[mode]!!.constructGame(id, center, players, listOf()).init()
                                 }.onFailure {
                                     PillarPeril.LOG.error("Could not start game", it)
                                     it.trackToFastStats()

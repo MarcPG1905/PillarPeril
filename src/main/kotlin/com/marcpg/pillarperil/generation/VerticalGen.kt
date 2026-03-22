@@ -12,6 +12,7 @@ abstract class VerticalGen(val game: Game) {
 }
 
 interface VertGenCompanion<T : VerticalGen> {
-    val genConstructor: (Game) -> T
     val namespace: String
+
+    fun constructGen(game: Game): T
 }

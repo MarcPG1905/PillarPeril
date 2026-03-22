@@ -27,6 +27,7 @@ abstract class Game(
     val id: String,
     center: Location,
     protected val bukkitPlayers: List<Player>,
+    val modifiers: List<GameModifier>,
 ): Ticking {
     enum class EndingCause {
         FORCE,
@@ -129,10 +130,14 @@ abstract class Game(
 
         items = Registry.ITEM.filter { it != ItemType.AIR && world.isEnabled(it) && info.additionalFilter(it) }.toList()
 
-        buildings = Buildings(this, info.horGen().genConstructor(this), info.vertGen().genConstructor(this))
         radius = initialPlayers.size * Configuration.platformDistanceFactor / Math.TAU
 
+        modifiers.forEach { it.init() }
+
+        buildings = Buildings(this, info.horGen().constructGen(this), info.vertGen().constructGen(this))
         buildings.generate().forEachIndexed { i, l -> players[i].teleport(l.clone().add(0.0, 1.0, 0.0).toCenterLocation()) }
+
+        modifiers.forEach { it.customBuild() }
 
         if (info.showBossBar()) {
             bossBar = bossBarCreator()
@@ -179,6 +184,8 @@ abstract class Game(
 
         player.deathTime = Bukkit.getCurrentTick()
 
+        modifiers.forEach { it.onPlayerDeath(player) }
+
         val win = players.size <= 1
         val winners = players.toList()
 
@@ -201,6 +208,8 @@ abstract class Game(
                 player.player.gameMode = GameMode.SPECTATOR
                 player.player.teleport(center)
             }
+
+            modifiers.forEach { it.onPostPlayerDeath(player) }
         }
     }
 
@@ -210,6 +219,7 @@ abstract class Game(
         if (tick.isSecond(startingTick)) {
             itemCountdown.dec()
             if (itemCountdown.get() <= 0) {
+                modifiers.forEach { it.onItemCycle() }
                 players.forEach { addItem(it) }
                 itemCountdown.set(info.itemCountdown())
             } else {
@@ -225,6 +235,7 @@ abstract class Game(
 
         tickEvents.filter { tick.isInInterval(startingTick, it.value) }.forEach { it.key() }
 
+        modifiers.forEach { it.tick(tick) }
     }
 
     fun end(cause: EndingCause, winners: List<PillarPlayer> = listOf()) {

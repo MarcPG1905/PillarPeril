@@ -2,6 +2,8 @@ package com.marcpg.pillarperil.game.util
 
 import com.marcpg.pillarperil.game.Game
 import com.marcpg.pillarperil.player.PillarPlayer
+import org.bukkit.Location
+import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
 
 object GameManager {

@@ -11,6 +11,7 @@ abstract class HorizontalGen(val game: Game) {
 }
 
 interface HorGenCompanion<T : HorizontalGen> {
-    val genConstructor: (Game) -> T
     val namespace: String
+
+    fun constructGen(game: Game): T
 }

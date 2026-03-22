@@ -31,7 +31,12 @@ class PillarPlayer(player: Player, val game: Game) : PlayerMinecraftReceiver(pla
 
     fun giveItems(available: Collection<ItemType>, differentItems: Int = 1) {
         repeat(differentItems) {
-            player.inventory.addItem(available.random().createItemStack())
+            var item = available.random().createItemStack()
+            for (modifier in game.modifiers) {
+                item = modifier.onItemReceive(item)
+            }
+
+            player.inventory.addItem(item)
         }
         player.playSoundSafe(Sound.ENTITY_ITEM_PICKUP, 0.75f) { Configuration.soundEffectsItem }
     }

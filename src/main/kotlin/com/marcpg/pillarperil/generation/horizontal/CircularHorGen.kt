@@ -9,8 +9,9 @@ import kotlin.math.sin
 
 class CircularHorGen(game: Game) : HorizontalGen(game) {
     companion object : HorGenCompanion<CircularHorGen> {
-        override val genConstructor: (Game) -> CircularHorGen = { CircularHorGen(it) }
         override val namespace: String = "circular"
+
+        override fun constructGen(game: Game): CircularHorGen = CircularHorGen(game)
     }
 
     val players = game.players.size

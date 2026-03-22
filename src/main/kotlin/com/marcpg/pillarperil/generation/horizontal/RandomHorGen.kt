@@ -7,8 +7,9 @@ import org.bukkit.Location
 
 class RandomHorGen(game: Game) : HorizontalGen(game) {
     companion object : HorGenCompanion<RandomHorGen> {
-        override val genConstructor: (Game) -> RandomHorGen = { RandomHorGen(it) }
         override val namespace: String = "random"
+
+        override fun constructGen(game: Game): RandomHorGen = RandomHorGen(game)
     }
 
     val players = game.players.size

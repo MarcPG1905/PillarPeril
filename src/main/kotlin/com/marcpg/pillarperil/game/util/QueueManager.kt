@@ -94,6 +94,7 @@ object QueueManager : Ticking {
         Configuration.queuePostCommands.forEach { PillarPeril.sendCommand(it(map)) }
 
         // Actually start the game after doing like 20 other things:
-        Configuration.queueMode.gameConstructor(id, location, players).init()
+        // TODO: Supply list of modifiers here:
+        Configuration.queueMode.constructGame(id, location, players, listOf()).init()
     }
 }

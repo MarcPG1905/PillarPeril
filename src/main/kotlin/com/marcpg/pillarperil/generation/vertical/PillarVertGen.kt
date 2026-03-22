@@ -7,8 +7,9 @@ import com.marcpg.pillarperil.util.Configuration
 
 class PillarVertGen(game: Game) : VerticalGen(game) {
     companion object : VertGenCompanion<PillarVertGen> {
-        override val genConstructor: (Game) -> PillarVertGen = { PillarVertGen(it) }
         override val namespace: String = "pillar"
+
+        override fun constructGen(game: Game): PillarVertGen = PillarVertGen(game)
     }
 
     override fun generate(x: Double, z: Double) {

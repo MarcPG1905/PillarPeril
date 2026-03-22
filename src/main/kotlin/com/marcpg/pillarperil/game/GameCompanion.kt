@@ -5,6 +5,7 @@ import org.bukkit.Location
 import org.bukkit.entity.Player
 
 interface GameCompanion<T : Game> {
-    val gameConstructor: (String, Location, List<Player>) -> T
     val gameInfo: GameInfo
+
+    fun constructGame(id: String, center: Location, bukkitPlayers: List<Player>, modifiers: List<GameModifier>): T
 }
