@@ -163,6 +163,17 @@ sound-effects:
   item: true
 
 
+## Items ##
+# All settings related to the items players can receive.
+items:
+
+  # A list of all items which will never be given to players, independent of the game mode.
+  blacklist:
+    - air
+    - bedrock
+    - ender_dragon_spawn_egg
+
+
 ## Default Game Modes ##
 # Allows you to configure various properties of the default game modes.
 modes:

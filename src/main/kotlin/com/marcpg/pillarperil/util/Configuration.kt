@@ -12,6 +12,7 @@ import org.bukkit.Keyed
 import org.bukkit.NamespacedKey
 import org.bukkit.World
 import org.bukkit.block.BlockType
+import org.bukkit.inventory.ItemType
 
 object Configuration : Config(PaperConfigProvider()) {
     override val versionHistory: List<ConfigVersion> = listOf(
@@ -49,6 +50,8 @@ object Configuration : Config(PaperConfigProvider()) {
     var soundEffectsEnabled by boolean("sound-effects.enabled", true)
     var soundEffectsCooldown by int("sound-effects.cooldown", 3)
     var soundEffectsItem by boolean("sound-effects.item", true)
+
+    var itemsBlacklist by custom("items.blacklist", PPEntryTypes.minecraftRegistry(org.bukkit.Registry.ITEM).list, listOf(ItemType.AIR, ItemType.BEDROCK, ItemType.ENDER_DRAGON_SPAWN_EGG))
 
     var disableFastStats by boolean("disable-faststats", false)
 

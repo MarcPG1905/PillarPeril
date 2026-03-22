@@ -128,7 +128,7 @@ abstract class Game(
                 players += it
             }
 
-        items = Registry.ITEM.filter { it != ItemType.AIR && world.isEnabled(it) && info.additionalFilter(it) }.toList()
+        items = Registry.ITEM.filter { it !in Configuration.itemsBlacklist && world.isEnabled(it) && info.additionalFilter(it) }.toList()
 
         radius = initialPlayers.size * Configuration.platformDistanceFactor / Math.TAU
 
