@@ -59,11 +59,27 @@ There are two queue modes: `command` (players use /queue) and `auto` (players ar
 
 Translations are auto-downloaded from our translation server; if the server is not reachable, the plugin falls back to English. (No sensitive data is sent.)
 
+---
+
+<details>
+<summary>Info about Metrics collected</summary>
+
+PillarPeril by default collects some data about how people use the plugin, so game modes can better be adjusted and the game can further be balanced.
+
+This is a complete list of all data collected, besides [FastStats](https://faststats.dev/) defaults:
+
+- Amount of games running/started
+- Game modifiers most frequently used
+- Average amount of players per game
+
+If you do not want to send any of these metrics, you can set `disable-faststats` in the configuration to true, or follow the instructions given on first startup with FastStats.
+</details>
+
 ## Releases & Contact
 
 You can find our official releases on these platforms:
 
-**Releases:** [Modrinth](https://modrinth.com/plugin/pillarperil) — [GitHub](https://github.com/MarcPG1905/PillarPeril/releases) — [Hangar](https://hangar.papermc.io/MarcPG1905/PillarPeril)  
-**Legacy (outdated):** [SpigotMC](https://www.spigotmc.org/resources/pillar-peril.119457) — [CurseForge](https://www.curseforge.com/minecraft/bukkit-plugins/pillarperil)
+**Releases:** [Modrinth](https://modrinth.com/plugin/pillarperil) — [GitHub](https://github.com/MarcPG1905/PillarPeril/releases)  
+**Legacy (outdated):** [SpigotMC](https://www.spigotmc.org/resources/pillar-peril.119457) — [CurseForge](https://www.curseforge.com/minecraft/bukkit-plugins/pillarperil) — [Hangar](https://hangar.papermc.io/MarcPG1905/PillarPeril)
 
 **Contact:** Join our community on [Discord](https://discord.gg/HvWhqY3kRG), message me on Discord (`@marcpg1905`) or email me at [marcpg@proton.me](mailto:marcpg@proton.me).

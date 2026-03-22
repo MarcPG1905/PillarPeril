@@ -9,11 +9,25 @@ import org.bukkit.entity.Player
 object GameManager {
     val games = mutableMapOf<String, Game>()
 
+    /*
+     * Suggestions for further Metrics:
+     *
+     * - Death Causes
+     * - Player Death Times
+     * - Items:
+     *   - Items Received:Dropped Ratio
+     *   - Item Types Dropped
+     */
     val gamesStartedSinceLastFlush = mutableListOf<String>()
+    val modifiersUsedSinceLastFlush = mutableListOf<String>()
+    val playersPerGameSinceLastFlush = mutableListOf<Int>()
 
     fun add(game: Game) {
         games[game.id] = game
+
         gamesStartedSinceLastFlush.add(game.info.namespace)
+        modifiersUsedSinceLastFlush.addAll(game.modifiers.map { it.info.namespace })
+        playersPerGameSinceLastFlush.add(game.initialPlayers.size)
     }
 
     fun remove(game: Game) {

@@ -50,8 +50,14 @@ class PillarPeril : KotlinPlugin(Companion) {
 
                 .addMetric(Metric.number("games_running") { GameManager.games.size })
                 .addMetric(Metric.stringArray("games_started") { GameManager.gamesStartedSinceLastFlush.toTypedArray() })
+                .addMetric(Metric.stringArray("modifiers_used") { GameManager.modifiersUsedSinceLastFlush.toTypedArray() })
+                .addMetric(Metric.numberArray("players_per_game") { GameManager.playersPerGameSinceLastFlush.toTypedArray() })
 
-                .onFlush { GameManager.gamesStartedSinceLastFlush.clear() }
+                .onFlush {
+                    GameManager.gamesStartedSinceLastFlush.clear()
+                    GameManager.modifiersUsedSinceLastFlush.clear()
+                    GameManager.playersPerGameSinceLastFlush.clear()
+                }
 
                 .errorTracker(errorTracker)
                 .create(this)
