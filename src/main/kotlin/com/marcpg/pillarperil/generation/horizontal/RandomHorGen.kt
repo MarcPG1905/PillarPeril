@@ -18,8 +18,8 @@ class RandomHorGen(game: Game) : HorizontalGen(game) {
         game.radius *= 1.2
 
         val candidates = mutableSetOf<Location>()
-        for (x in -game.radius.toInt() until game.radius.toInt()) {
-            for (z in -game.radius.toInt() until game.radius.toInt()) {
+        for (x in -game.radius.toInt()..<game.radius.toInt()) {
+            for (z in -game.radius.toInt()..<game.radius.toInt()) {
                 val loc = game.center.clone().add(x.toDouble(), 0.0, z.toDouble())
                 if (game.center.distance(loc) <= game.radius)
                     candidates += loc
@@ -27,7 +27,7 @@ class RandomHorGen(game: Game) : HorizontalGen(game) {
         }
 
         val locations = mutableListOf<Location>()
-        (0 until players).forEach { _ ->
+        (0..<players).forEach { _ ->
             val loc = candidates.random()
             candidates -= loc
             locations += location(loc.x, loc.z)

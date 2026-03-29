@@ -18,7 +18,7 @@ class CircularHorGen(game: Game) : HorizontalGen(game) {
 
     override fun generate(): List<Location> {
         val locations = mutableListOf<Location>()
-        for (i in 0 until players) {
+        for (i in 0..<players) {
             val angle = Math.TAU * i / players
             locations += location(
                 game.center.x + game.radius * cos(angle),

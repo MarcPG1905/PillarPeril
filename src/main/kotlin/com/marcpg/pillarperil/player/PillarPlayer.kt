@@ -16,8 +16,8 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemType
 
 class PillarPlayer(player: Player, val game: Game) : PlayerMinecraftReceiver(player) {
-    val simpleScoreboard: SimpleScoreboard? = if (game.info.showScoreboard()) game.scoreboard?.invoke(this) else null
-    val simpleActionBar: SimpleActionBar? = if (game.info.showActionBar()) game.actionBar?.invoke(this) else null
+    var simpleScoreboard: SimpleScoreboard? = null
+    var simpleActionBar: SimpleActionBar? = null
 
     var kills: Int = 0
     var deathTime: Int? = null
@@ -25,8 +25,23 @@ class PillarPlayer(player: Player, val game: Game) : PlayerMinecraftReceiver(pla
     val initialSnapshot = PlayerSnapshot(player)
 
     init {
-        simpleScoreboard?.start()
-        simpleActionBar?.start()
+        if (game.info.showScoreboard()) {
+            try {
+                simpleScoreboard = game.scoreboard?.invoke(this)
+                simpleScoreboard!!.start()
+            } catch (e: Exception) {
+                game.error("Could not create and initialize scoreboard for $this.", e)
+            }
+        }
+
+        if (game.info.showActionBar()) {
+            try {
+                simpleActionBar = game.actionBar?.invoke(this)
+                simpleActionBar!!.start()
+            } catch (e: Exception) {
+                game.error("Could not create and initialize action bar for $this.", e)
+            }
+        }
     }
 
     fun giveItems(available: Collection<ItemType>, differentItems: Int = 1) {

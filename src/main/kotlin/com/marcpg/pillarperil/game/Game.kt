@@ -165,8 +165,9 @@ abstract class Game(
 
     // ================= UTILITY METHODS =================
 
-    protected fun info(msg: String) = PillarPeril.LOG.info("[${Constants.GAME_LOG_PREFIX}$id] $msg")
-    protected fun warn(msg: String) = PillarPeril.LOG.warn("[${Constants.GAME_LOG_PREFIX}$id] $msg")
+    fun info(msg: String) = PillarPeril.LOG.info("[${Constants.GAME_LOG_PREFIX}$id] $msg")
+    fun warn(msg: String) = PillarPeril.LOG.warn("[${Constants.GAME_LOG_PREFIX}$id] $msg")
+    fun error(msg: String, e: Throwable) = PillarPeril.LOG.error("[${Constants.GAME_LOG_PREFIX}$id] $msg", e)
 
     protected fun addTickEvent(interval: Time, event: () -> Unit) = addTickEvent(interval.get() * 20L, event)
 
