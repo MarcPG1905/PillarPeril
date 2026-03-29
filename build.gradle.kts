@@ -41,7 +41,7 @@ dependencies {
     compileOnly(kotlin("stdlib"))
     paperweight.paperDevBundle(libs.versions.paper.get())
 
-    implementationOrFile(libs.ktlibpg.paper, "libs/ktlibpg-platform-paper-2.0.2.jar")
+    implementationOrFile(libs.ktlibpg.paper, "libs/ktlibpg-platform-paper-2.0.3.jar")
     implementation(libs.faststats)
 }
 

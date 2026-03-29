@@ -1,43 +1,43 @@
-#################################################################################
-##                  ____  _ _ _            ____           _ _                  ##
-##_________________|  _ \(_) | | __ _ _ __|  _ \ ___ _ __(_) |_________________##
-##_________________| |_) | | | |/ _` | '__| |_) / _ \ '__| | |_________________##
-##_________________|  __/| | | | (_| | |  |  __/  __/ |  | | |_________________##
-##_________________|_|   |_|_|_|\__,_|_|  |_|   \___|_|  |_|_|_________________##
-##                                Configuration                                ##
-##                                                                             ##
-##       SOURCE-CODE:   https://github.com/MarcPG1905/PillarPeril              ##
-##       BUGS & ISSUES: https://github.com/MarcPG1905/PillarPeril/issues       ##
-##                                                                             ##
-#################################################################################
+# ############################################################################### #
+# #                  ____  _ _ _            ____           _ _                  # #
+# #_________________|  _ \(_) | | __ _ _ __|  _ \ ___ _ __(_) |_________________# #
+# #_________________| |_) | | | |/ _` | '__| |_) / _ \ '__| | |_________________# #
+# #_________________|  __/| | | | (_| | |  |  __/  __/ |  | | |_________________# #
+# #_________________|_|   |_|_|_|\__,_|_|  |_|   \___|_|  |_|_|_________________# #
+# #                                Configuration                                # #
+# #                                                                             # #
+# #       SOURCE-CODE:   https://github.com/MarcPG1905/PillarPeril              # #
+# #       BUGS & ISSUES: https://github.com/MarcPG1905/PillarPeril/issues       # #
+# #                                                                             # #
+# ############################################################################### #
 
 
-## Platform Height ##
+# Platform Height #
 # The y-coordinate that the bedrock platforms will raise to.
 # Default: 200
 platform-height: 200
 
 
-## Platform Material ##
+# Platform Material #
 # The material the platforms are made of.
 # Default: bedrock
 platform-material: bedrock
 
 
-## Max Fall Distance ##
+# Max Fall Distance #
 # The maximum distance you can fall from the platforms until you die.
 # This number will be extracted from the pillar height to determine the y-coordinate you die at.
-# Default: 25
-max-fall: 25
+# Default: 25.0
+max-fall: 25.0
 
 
-## Pillar Distance Factor ##
+# Pillar Distance Factor #
 # The factor of the distance between platforms. This is used to determine the radius of the pillar field.
 # Default: 10.0
 platform-distance-factor: 10.0
 
 
-## Enable Draws ##
+# Enable Draws #
 # Whether draws can happen or not, which will happen among the last players if they all die within one second,
 # which almost always means they all fell off the platform at almost the same time.
 # Default: false
@@ -55,17 +55,17 @@ enable-draws: false
 #     | -> '{z}'        : the game's center location's z-component
 #     | -> '{cause}'    : the cause for the game ending, in snake_case
 ending-commands:
-  - "/say Ending game with cause {cause}..." # <- example, you can freely remove this and leave the list empty.
+  - /say Ending game with cause {cause}... # <- example, you can freely remove this and leave the list empty.
 
 
-## Respawn at Config ##
+# Respawn at Config #
 # Whether to respawn players at the configured `player-spawn` below instead of making them spectate.
 # If spectating (=false), it will spawn players in spectator mode in the middle of the game.
 # Default: false
 respawn-at-config: false
 
 
-## Player Spawn ##
+# Player Spawn #
 # Where and how to spawn players after the game ends.
 # If above value is set to true, players will also spawn here when dying.
 player-spawn:
@@ -84,7 +84,7 @@ player-spawn:
     z: 0.0
 
 
-## Queue ##
+# Queue #
 # The optional queue module for automatically starting games when enough players joined.
 queue:
 
@@ -116,7 +116,7 @@ queue:
   #     | -> '{id}'       : started game's ID
   #     | -> '{mode}'     : started game's game-mode
   #     | -> '{players}'  : amount of players in the started game
-  world: "world"
+  world: world
 
   # The location to start the game at.
   # If the y-component is set to -64.0, the game will start at the world spawn.
@@ -132,7 +132,7 @@ queue:
   #     | -> '{mode}'     : started game's game-mode
   #     | -> '{players}'  : amount of players in the started game
   pre-commands:
-    - "/say Initializing game with {players} players..." # <- example, you can freely remove this and leave the list empty.
+    - /say Initializing game with {players} players... # <- example, you can freely remove this and leave the list empty.
 
   # An ordered list of commands to execute after the world and location of the game were accessed.
   # Things like creating a world for the game cannot happen here anymore.
@@ -145,10 +145,10 @@ queue:
   #     | -> '{y}'        : the game's center location's y-component
   #     | -> '{z}'        : the game's center location's z-component
   post-commands:
-    - "/say Starting game at {x}/{y}/{z}..." # <- example, you can freely remove this and leave the list empty.
+    - /say Starting game at {x}/{y}/{z}... # <- example, you can freely remove this and leave the list empty.
 
 
-## Sound Effects ##
+# Sound Effects #
 sound-effects:
 
   # Controls all sound effects. If this is set to 'false', no sound effects will be played at all, ignoring all configuration below.
@@ -163,7 +163,7 @@ sound-effects:
   item: true
 
 
-## Items ##
+# Items #
 # All settings related to the items players can receive.
 items:
 
@@ -174,7 +174,7 @@ items:
     - ender_dragon_spawn_egg
 
 
-## Default Game Modes ##
+# Default Game Modes #
 # Allows you to configure various properties of the default game modes.
 modes:
 
@@ -283,13 +283,13 @@ modes:
       vertical: pillar
 
 
-## Disable FastStats Integration ##
+# Disable FastStats Integration #
 # FastStats sends completely anonymous data about the server's Minecraft version, used game modes, etc.
 # to improve the plugin based on real usage data.
 # If you do not want to send this data, feel free to opt out here, in FastStats' own configuration,
 # or using the `-Dfaststats.enabled=false` JVM flag to disable FastStats globally.
 disable-faststats: false
 
-## The Configuration Version ##
+# The Configuration Version #
 # DO NOT MODIFY THIS, OR THE CONFIGURATION WILL LIKELY BREAK OR BE RESET!
-version: 5
+version: 6

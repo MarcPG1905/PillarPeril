@@ -20,9 +20,10 @@ object Configuration : Config(PaperConfigProvider()) {
         ConfigVersion(id = 3),
         ConfigVersion(id = 4),
         ConfigVersion(id = 5),
+        ConfigVersion(id = 6),
     )
 
-    override val version: Int = 5
+    override val version: Int = 6
 
     var platformHeight by double("platform-height", 200.0)
     var platformMaterial by custom("platform-material", PPEntryTypes.minecraftRegistry(org.bukkit.Registry.BLOCK), BlockType.BEDROCK)
