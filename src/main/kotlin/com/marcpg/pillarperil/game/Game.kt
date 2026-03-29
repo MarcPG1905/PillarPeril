@@ -80,6 +80,7 @@ abstract class Game(
         get() = (itemCountdown.get().toFloat() / (info.itemCountdown().toFloat() - 1)).coerceIn(0.0f, 1.0f)
 
     private val tickEvents = mutableMapOf<() -> Unit, Int>()
+    private val itemEvents = mutableListOf<() -> Unit>()
 
     var ending = false
 
@@ -166,6 +167,10 @@ abstract class Game(
         tickEvents[event] = intervalTicks.toInt()
     }
 
+    protected fun addItemEvent(event: () -> Unit) {
+        itemEvents.add(event)
+    }
+
     fun target(onlyAlive: Boolean = true): MinecraftReceiver = if (onlyAlive) players.receiver() else initialTarget
 
     fun player(bukkitPlayer: Player, onlyAlive: Boolean = true): PillarPlayer? {
@@ -221,6 +226,8 @@ abstract class Game(
         if (tick.isSecond(startingTick)) {
             if (itemCountdown.get() <= 0) {
                 modifiers.forEach { it.onItemCycle() }
+                itemEvents.forEach { it() }
+
                 players.forEach { addItem(it) }
                 itemCountdown.set(info.itemCountdown())
             } else {

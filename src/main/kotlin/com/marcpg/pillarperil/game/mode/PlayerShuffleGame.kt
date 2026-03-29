@@ -1,6 +1,5 @@
 package com.marcpg.pillarperil.game.mode
 
-import com.marcpg.libpg.data.time.Time
 import com.marcpg.libpg.display.location
 import com.marcpg.libpg.display.teleport
 import com.marcpg.pillarperil.game.Game
@@ -22,11 +21,11 @@ class PlayerShuffleGame(id: String, center: Location, bukkitPlayers: List<Player
     override val info: GameInfo = gameInfo
 
     init {
-        addTickEvent(Time(gameInfo.itemCountdown())) {
+        addItemEvent {
             val players = players.shuffled()
 
             val temp: Location = players.first().location().clone()
-            for (i in 0 until players.size - 1) {
+            for (i in 0..<players.size - 1) {
                 players[i].teleport(players[i + 1].location())
             }
             players.last().teleport(temp)

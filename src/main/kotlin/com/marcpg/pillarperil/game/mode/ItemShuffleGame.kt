@@ -1,6 +1,5 @@
 package com.marcpg.pillarperil.game.mode
 
-import com.marcpg.libpg.data.time.Time
 import com.marcpg.pillarperil.game.Game
 import com.marcpg.pillarperil.game.GameCompanion
 import com.marcpg.pillarperil.game.GameModifier
@@ -20,7 +19,7 @@ class ItemShuffleGame(id: String, center: Location, bukkitPlayers: List<Player>,
     override val info: GameInfo = gameInfo
 
     init {
-        addTickEvent(Time(gameInfo.itemCountdown())) {
+        addItemEvent {
             players.forEach { p ->
                 p.player.inventory.clear()
                 p.giveItems(items, differentItems = 9)
