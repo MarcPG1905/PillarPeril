@@ -73,7 +73,7 @@ class PillarPeril : KotlinPlugin(Companion) {
     }
 
     override fun disable() {
-        (metrics as SimpleMetrics).submit()
+        (metrics as SimpleMetrics?)?.submit()
 
         GameManager.games.values.toList().forEach { it.end(Game.EndingCause.FORCE) }
         Configuration.save()

@@ -8,7 +8,7 @@ paperweight-userdev = "2.0.0-beta.18"
 
 # ===== Dependencies =====
 ktlibpg = "2.0.2"
-faststats = "0.18.1"
+faststats = "0.20.0"
 paper = "1.21.8-R0.1-SNAPSHOT"
 
 
