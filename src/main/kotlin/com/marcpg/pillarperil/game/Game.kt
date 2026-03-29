@@ -131,7 +131,14 @@ abstract class Game(
                 players += it
             }
 
-        items = Registry.ITEM.filter { it !in Configuration.itemsBlacklist && world.isEnabled(it) && info.additionalFilter(it) }.toList()
+        @Suppress("DEPRECATION", "removal")
+        val enabledCheck: (ItemType) -> Boolean = getIfClassExists(
+            "io.papermc.paper.world.flag.FeatureDependant",
+            {{ world.isEnabled(it) }},
+            {{ it.isEnabledByFeature(world) }}
+        )
+
+        items = Registry.ITEM.filter { it !in Configuration.itemsBlacklist && enabledCheck(it) && info.additionalFilter(it) }.toList()
 
         radius = initialPlayers.size * Configuration.platformDistanceFactor / Math.TAU
 

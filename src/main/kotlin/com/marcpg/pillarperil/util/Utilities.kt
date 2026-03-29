@@ -15,6 +15,16 @@ fun Throwable.trackToFastStats() {
     PillarPeril.PLUGIN.errorTracker?.trackError(this)
 }
 
+fun <T> getIfClassExists(requiredClass: String, hasClass: () -> T, alternative: () -> T): T {
+    try {
+        Class.forName(requiredClass)
+    } catch (_: ClassNotFoundException) {
+        return alternative()
+    }
+    // Return outside the try to not catch exceptions possibly created by hasClass itself.
+    return hasClass()
+}
+
 fun <T : Any> World.setGameRuleSafe(oldName: String, newName: String, value: T) {
     val field = try {
         // New game-rule system from 1.21.9, 1.21.10, or 1.21.11, not sure when exactly it got added:
