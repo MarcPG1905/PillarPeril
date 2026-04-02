@@ -24,6 +24,8 @@ class PlayerShuffleGame(id: String, center: Location, bukkitPlayers: List<Player
         addItemEvent {
             val players = players.shuffled()
 
+            if (players.isEmpty()) return@addItemEvent
+
             val temp: Location = players.first().location().clone()
             for (i in 0..<players.size - 1) {
                 players[i].teleport(players[i + 1].location())

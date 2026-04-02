@@ -229,7 +229,7 @@ abstract class Game(
     }
 
     override fun tick(tick: Ticking.Tick) {
-        if (ending) return
+        if (ending || players.isEmpty()) return
 
         if (tick.isSecond(startingTick)) {
             if (itemCountdown.get() <= 0) {
