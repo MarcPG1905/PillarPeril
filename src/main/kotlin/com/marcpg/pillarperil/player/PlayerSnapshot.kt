@@ -1,9 +1,9 @@
 package com.marcpg.pillarperil.player
 
+import com.marcpg.pillarperil.util.getAttributeSafe
 import net.kyori.adventure.text.Component
 import org.bukkit.GameMode
 import org.bukkit.Location
-import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.scoreboard.Scoreboard
@@ -30,9 +30,9 @@ data class PlayerSnapshot(
     constructor(player: Player) : this(
         player.uniqueId,
         player.displayName(),
-        player.inventory.contents.toList(),
-        player.inventory.armorContents.toList(),
-        player.inventory.extraContents.toList(),
+        player.inventory.contents.copyOf().toList(),
+        player.inventory.armorContents.copyOf().toList(),
+        player.inventory.extraContents.copyOf().toList(),
         player.exp,
         player.totalExperience,
         player.level,
@@ -85,7 +85,7 @@ data class PlayerSnapshot(
             player.scoreboard = scoreboard
 
         if (restoreHealth)
-            player.health = min(health, player.getAttribute(Attribute.MAX_HEALTH)?.value ?: 1.0)
+            player.health = min(health, player.getAttributeSafe("MAX_HEALTH")?.value ?: 1.0)
 
         if (restoreHunger) {
             player.foodLevel = foodLevel

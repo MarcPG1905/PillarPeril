@@ -20,7 +20,6 @@ import net.kyori.adventure.text.format.TextDecoration
 import net.kyori.adventure.text.minimessage.MiniMessage
 import net.kyori.adventure.title.Title
 import org.bukkit.*
-import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemType
 import kotlin.math.atan2
@@ -129,7 +128,7 @@ abstract class Game(
                 it.player.foodLevel = 20
                 it.player.saturation = 20.0f
 
-                val maxHealth = it.player.getAttribute(Attribute.MAX_HEALTH)?.value
+                val maxHealth = it.player.getAttributeSafe("MAX_HEALTH")?.value
                 if (maxHealth != null) {
                     it.player.health = maxHealth
                 } else {

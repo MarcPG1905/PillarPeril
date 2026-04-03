@@ -4,10 +4,10 @@ import com.marcpg.pillarperil.game.Game
 import com.marcpg.pillarperil.game.GameCompanion
 import com.marcpg.pillarperil.game.GameModifier
 import com.marcpg.pillarperil.game.util.GameInfo
+import com.marcpg.pillarperil.util.toItemStackSafe
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.entity.Player
-import org.bukkit.inventory.ItemStack
 
 class BlockyGame(id: String, center: Location, bukkitPlayers: List<Player>, modifiers: List<GameModifier>) : Game(id, center, bukkitPlayers, modifiers) {
     companion object : GameCompanion<BlockyGame> {
@@ -31,6 +31,6 @@ class BlockyGame(id: String, center: Location, bukkitPlayers: List<Player>, modi
     override fun init() {
         super.init()
 
-        bukkitPlayers.forEach { it.inventory.addItem(ItemStack.of(attackItems.random())) }
+        bukkitPlayers.forEach { it.inventory.addItem(attackItems.random().toItemStackSafe()) }
     }
 }
