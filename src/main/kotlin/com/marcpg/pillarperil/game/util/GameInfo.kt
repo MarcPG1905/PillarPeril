@@ -37,7 +37,8 @@ data class GameInfo(
     val keyStyle: () -> Style = { Style.style(accentColor(), TextDecoration.BOLD) }
     val valueStyle = Style.style(NamedTextColor.GRAY).decoration(TextDecoration.BOLD, TextDecoration.State.FALSE)
 
-    fun name(locale: Locale) = locale.string("name.$namespace")
+    fun name(locale: Locale) = locale.string("game.$namespace.name")
+    fun description(locale: Locale) = locale.string("game.$namespace.description")
 }
 
 fun String?.fromHexToTextColor(): TextColor = (if (this == null) null else TextColor.fromHexString(this)) ?: NamedTextColor.WHITE

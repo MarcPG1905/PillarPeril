@@ -9,5 +9,6 @@ data class GameModifierInfo(
     val mode: GameModifierCompanion<*>,
     val namespace: String,
 ) {
-    fun name(locale: Locale) = locale.string("modifier.name.$namespace")
+    fun name(locale: Locale) = locale.string("modifier.$namespace.name")
+    fun description(locale: Locale) = locale.string("modifier.$namespace.description")
 }
