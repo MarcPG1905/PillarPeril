@@ -2,13 +2,15 @@
 
 # ===== Gradle Plugins =====
 kotlin = "2.3.0"
-shadow = "9.3.0"
+shadow = "9.3.1"
 jpnilla-run = "3.0.2"
-paperweight-userdev = "2.0.0-beta.18"
+paperweight-userdev = "2.0.0-beta.19"
 
 # ===== Dependencies =====
 ktlibpg = "2.0.3"
 faststats = "0.20.0"
+
+# Just an arbitrary version; will still work for 1.20.6 up to 21.1.1.
 paper = "1.21.8-R0.1-SNAPSHOT"
 
 
