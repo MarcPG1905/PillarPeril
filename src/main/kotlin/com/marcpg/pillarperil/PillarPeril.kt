@@ -19,7 +19,7 @@ class PillarPeril : KotlinPlugin(Companion) {
     companion object : KotlinPluginCompanion() {
         lateinit var PLUGIN: PillarPeril
 
-        override val VERSION: String = "0.2.1"
+        override val VERSION: String = "0.2.2"
 
         fun sendCommand(cmd: String) {
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd)

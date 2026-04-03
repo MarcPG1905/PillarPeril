@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "com.marcpg.pillarperil"
-version = "0.2.1"
+version = "0.2.2"
 description = "Open-Source & customizable \"Pillars of Fortune\"-like game — spawn on bedrock pillars, get random items, and dominate!"
 
 kotlin {
@@ -20,7 +20,7 @@ repositories {
     mavenLocal()
     mavenCentral()
 
-    maven("https://marcpg.com/repo/")
+//    maven("https://marcpg.com/repo/")
     maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://repo.faststats.dev/releases/")
 }
@@ -54,7 +54,7 @@ tasks {
     }
     runServer {
         dependsOn(shadowJar)
-        minecraftVersion("1.21.8")
+        minecraftVersion("26.1.1")
     }
     shadowJar {
         archiveClassifier.set("")
