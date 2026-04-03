@@ -23,6 +23,7 @@ import org.bukkit.*
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemType
+import kotlin.math.atan2
 
 abstract class Game(
     val id: String,
@@ -154,7 +155,12 @@ abstract class Game(
         modifiers.forEach { it.init() }
 
         buildings = Buildings(this, info.horGen().constructGen(this), info.vertGen().constructGen(this))
-        buildings.generate().forEachIndexed { i, l -> players[i].teleport(l.clone().add(0.0, 1.0, 0.0).toCenterLocation()) }
+        val centeredCenter = center.toCenterLocation()
+        buildings.generate().forEachIndexed { i, l ->
+            val location = l.clone().add(0.0, 1.0, 0.0).toCenterLocation()
+            location.yaw = Math.toDegrees(atan2(-(centeredCenter.x - location.x), centeredCenter.z - location.z)).toFloat()
+            players[i].teleport(location)
+        }
 
         modifiers.forEach { it.customBuild() }
 
