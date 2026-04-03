@@ -3,10 +3,12 @@ package com.marcpg.pillarperil.player
 import net.kyori.adventure.text.Component
 import org.bukkit.GameMode
 import org.bukkit.Location
+import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.scoreboard.Scoreboard
 import java.util.*
+import kotlin.math.min
 
 data class PlayerSnapshot(
     val uuid: UUID,
@@ -83,7 +85,7 @@ data class PlayerSnapshot(
             player.scoreboard = scoreboard
 
         if (restoreHealth)
-            player.health = health
+            player.health = min(health, player.getAttribute(Attribute.MAX_HEALTH)?.value ?: 1.0)
 
         if (restoreHunger) {
             player.foodLevel = foodLevel

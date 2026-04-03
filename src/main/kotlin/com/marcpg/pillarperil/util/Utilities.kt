@@ -36,17 +36,17 @@ fun <T : Any> World.setGameRuleSafe(oldName: String, newName: String, value: T) 
     setGameRule(field.get(null) as GameRule<T>, value)
 }
 
-fun MinecraftReceiver.playSoundSafe(sound: Sound, volume: Float = 1.0f, pitch: Float = 1.0f, requirement: () -> Boolean) {
+fun MinecraftReceiver.playSoundSafe(sound: Sound, volume: Float = 1.0f, pitch: Float = 1.0f, requirement: (() -> Boolean) = { true }) {
     if (Configuration.soundEffectsEnabled && requirement())
         this.playSound(Registry.SOUNDS.getKeyOrThrow(sound), volume, pitch)
 }
 
-fun List<MinecraftReceiver>.playSoundSafe(sound: Sound, volume: Float = 1.0f, pitch: Float = 1.0f, requirement: () -> Boolean) {
+fun List<MinecraftReceiver>.playSoundSafe(sound: Sound, volume: Float = 1.0f, pitch: Float = 1.0f, requirement: (() -> Boolean) = { true }) {
     if (Configuration.soundEffectsEnabled && requirement())
         this.receiver().playSound(Registry.SOUNDS.getKeyOrThrow(sound), volume, pitch)
 }
 
-fun Player.playSoundSafe(sound: Sound, volume: Float = 1.0f, pitch: Float = 1.0f, requirement: () -> Boolean) {
+fun Player.playSoundSafe(sound: Sound, volume: Float = 1.0f, pitch: Float = 1.0f, requirement: (() -> Boolean) = { true }) {
     if (Configuration.soundEffectsEnabled && requirement())
         this.playSound(this, sound, volume, pitch)
 }

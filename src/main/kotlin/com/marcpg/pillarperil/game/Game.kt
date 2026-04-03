@@ -20,6 +20,7 @@ import net.kyori.adventure.text.format.TextDecoration
 import net.kyori.adventure.text.minimessage.MiniMessage
 import net.kyori.adventure.title.Title
 import org.bukkit.*
+import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemType
 
@@ -117,15 +118,23 @@ abstract class Game(
         world.setGameRuleSafe("DO_IMMEDIATE_RESPAWN", "IMMEDIATE_RESPAWN", true)
 
         bukkitPlayers
-            .onEach {
-                QueueManager.remove(it)
-
-                it.gameMode = GameMode.SURVIVAL
-                it.clearActivePotionEffects()
-                it.inventory.clear()
-                it.health = 20.0
-            }
             .map { PillarPlayer(it, this) }
+            .onEach {
+                QueueManager.remove(it.player)
+
+                it.player.gameMode = GameMode.SURVIVAL
+                it.player.clearActivePotionEffects()
+                it.player.inventory.clear()
+                it.player.foodLevel = 20
+                it.player.saturation = 20.0f
+
+                val maxHealth = it.player.getAttribute(Attribute.MAX_HEALTH)?.value
+                if (maxHealth != null) {
+                    it.player.health = maxHealth
+                } else {
+                    it.player.heal(999.0)
+                }
+            }
             .forEach {
                 (initialPlayers as MutableList) += it
                 players += it
