@@ -26,7 +26,7 @@ object Commands {
     val game = command<CommandSourceStack>("game") {
         subcommand("start") {
             require("pillarperil.start")
-            argument("mode", ExtendedArgumentTypes.valued(Registry.modes.keys).paper()) {
+            argument("mode", ExtendedArgumentTypes.valuedWithTooltipFromLocale { locale -> Registry.modes.entries.associate { it.key to it.value.gameInfo.description(locale) } }.paper()) {
                 argument("center", ArgumentTypes.blockPosition()) {
                     argument("world", ArgumentTypes.world()) {
                         argument("players", ArgumentTypes.players()) {
