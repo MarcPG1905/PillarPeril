@@ -2,16 +2,11 @@ package com.marcpg.pillarperil.util
 
 import com.marcpg.libpg.display.MinecraftReceiver
 import com.marcpg.libpg.display.receiver
-import com.marcpg.pillarperil.PillarPeril
 import org.bukkit.Registry
 import org.bukkit.Sound
 import org.bukkit.entity.Player
 
-fun Throwable.trackToFastStats() {
-    if (Configuration.disableFastStats) return
-
-    PillarPeril.PLUGIN.errorTracker?.trackError(this)
-}
+fun Throwable.trackToFastStats() = Metrics.logError(this)
 
 fun MinecraftReceiver.playSoundSafe(sound: Sound, volume: Float = 1.0f, pitch: Float = 1.0f, requirement: (() -> Boolean) = { true }) {
     if (Configuration.soundEffectsEnabled && requirement())

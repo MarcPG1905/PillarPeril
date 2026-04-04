@@ -8,10 +8,7 @@ import com.marcpg.pillarperil.event.PlayerEvents
 import com.marcpg.pillarperil.game.Game
 import com.marcpg.pillarperil.game.util.GameManager
 import com.marcpg.pillarperil.util.Configuration
-import dev.faststats.bukkit.BukkitMetrics
-import dev.faststats.core.ErrorTracker
-import dev.faststats.core.SimpleMetrics
-import dev.faststats.core.data.Metric
+import com.marcpg.pillarperil.util.Metrics
 import org.bukkit.Bukkit
 import java.net.URI
 
@@ -26,11 +23,6 @@ class PillarPeril : KotlinPlugin(Companion) {
         }
     }
 
-    var errorTracker: ErrorTracker? = null
-        private set
-
-    private var metrics: BukkitMetrics? = null
-
     @Suppress("UnstableApiUsage")
     override fun enable() {
         saveDefaultConfig()
@@ -41,28 +33,7 @@ class PillarPeril : KotlinPlugin(Companion) {
 
         Registry.load()
         Configuration.init()
-
-        if (!Configuration.disableFastStats) {
-            errorTracker = ErrorTracker.contextAware()
-
-            metrics = BukkitMetrics.factory()
-                .token("7dd02fd8606bfaa736aa6911e94edca7")
-
-                .addMetric(Metric.number("games_running") { GameManager.games.size })
-                .addMetric(Metric.stringArray("games_started") { GameManager.gamesStartedSinceLastFlush.toTypedArray() })
-                .addMetric(Metric.stringArray("modifiers_used") { GameManager.modifiersUsedSinceLastFlush.toTypedArray() })
-                .addMetric(Metric.numberArray("players_per_game") { GameManager.playersPerGameSinceLastFlush.toTypedArray() })
-
-                .onFlush {
-                    GameManager.gamesStartedSinceLastFlush.clear()
-                    GameManager.modifiersUsedSinceLastFlush.clear()
-                    GameManager.playersPerGameSinceLastFlush.clear()
-                }
-
-                .errorTracker(errorTracker)
-                .create(this)
-            metrics?.ready()
-        }
+        Metrics.start()
 
         addListeners(GameEvents, PlayerEvents)
         addCommands(
@@ -73,11 +44,11 @@ class PillarPeril : KotlinPlugin(Companion) {
     }
 
     override fun disable() {
-        (metrics as SimpleMetrics?)?.submit()
+        Metrics.forceSubmit()
 
         GameManager.games.values.toList().forEach { it.end(Game.EndingCause.FORCE) }
         Configuration.save()
 
-        metrics?.shutdown()
+        Metrics.shutdown()
     }
 }
