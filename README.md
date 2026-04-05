@@ -79,7 +79,7 @@ If you do not want to send any of these metrics, you can set `disable-faststats`
 
 You can find our official releases on these platforms:
 
-**Releases:** [Modrinth](https://modrinth.com/plugin/pillarperil) — [GitHub](https://github.com/MarcPG1905/PillarPeril/releases)  
-**Legacy (outdated):** [SpigotMC](https://www.spigotmc.org/resources/pillar-peril.119457) — [CurseForge](https://www.curseforge.com/minecraft/bukkit-plugins/pillarperil) — [Hangar](https://hangar.papermc.io/MarcPG1905/PillarPeril)
+**Recommended:** [Modrinth](https://modrinth.com/plugin/pillarperil) — [GitHub](https://github.com/MarcPG1905/PillarPeril/releases)  
+**Other:** [SpigotMC](https://www.spigotmc.org/resources/pillar-peril.119457) — [Hangar](https://hangar.papermc.io/MarcPG1905/PillarPeril)
 
 **Contact:** Join our community on [Discord](https://discord.gg/HvWhqY3kRG), message me on Discord (`@marcpg1905`) or email me at [marcpg@proton.me](mailto:marcpg@proton.me).
