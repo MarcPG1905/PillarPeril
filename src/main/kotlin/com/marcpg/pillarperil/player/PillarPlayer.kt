@@ -70,7 +70,7 @@ class PillarPlayer(player: Player, val game: Game) : PlayerMinecraftReceiver(pla
         initialSnapshot.set(player, restoreGameMode = false, restoreLocation = false)
 
         player.gameMode = Configuration.spawnGameMode
-        player.teleport(Configuration.spawnLocation)
+        player.teleport(Configuration.getSpawnLocation(player.world))
 
         if (Configuration.queueMethod == QueueMethod.AUTO)
             bukkitRunLater(60L) { QueueManager.add(player) } // Wait 3 seconds before rejoining queue.

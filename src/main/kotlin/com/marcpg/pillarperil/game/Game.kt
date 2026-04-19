@@ -232,7 +232,7 @@ abstract class Game(
 
             if (Configuration.respawnAtConfig) {
                 player.player.gameMode = Configuration.spawnGameMode
-                player.player.teleport(Configuration.spawnLocation)
+                player.player.teleport(Configuration.getSpawnLocation(player.player.world))
             } else {
                 player.player.gameMode = GameMode.SPECTATOR
                 player.player.teleport(center)

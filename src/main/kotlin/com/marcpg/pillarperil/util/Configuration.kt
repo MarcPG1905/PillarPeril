@@ -7,10 +7,7 @@ import com.marcpg.libpg.util.toLocation
 import com.marcpg.pillarperil.PillarPeril
 import com.marcpg.pillarperil.Registry
 import com.marcpg.pillarperil.game.mode.OriginalGame
-import org.bukkit.GameMode
-import org.bukkit.Keyed
-import org.bukkit.NamespacedKey
-import org.bukkit.World
+import org.bukkit.*
 import org.bukkit.block.BlockType
 import org.bukkit.inventory.ItemType
 
@@ -57,7 +54,12 @@ object Configuration : Config(PaperConfigProvider()) {
     var disableFastStats by boolean("disable-faststats", false)
 
     val deathHeight get() = platformHeight - maxFall
-    val spawnLocation get() = if (spawnCord.y == -64.0) spawnWorld.value!!.spawnLocation else spawnCord.toLocation(spawnWorld.value)
+
+    fun getSpawnLocation(fallbackWorld: World): Location {
+        val world = spawnWorld.value ?: fallbackWorld
+        return if (spawnCord.y == -64.0) world.spawnLocation else spawnCord.toLocation(world)
+    }
+
     val queueCheckInterval get() = queueCheckIntervalSecs * 20
     fun queueLocation(world: World) = if (queueCord.y == -64.0) world.spawnLocation else queueCord.toLocation(world)
 
