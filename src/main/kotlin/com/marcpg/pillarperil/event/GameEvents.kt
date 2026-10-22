@@ -38,7 +38,9 @@ object GameEvents : Listener {
 
     @EventHandler(ignoreCancelled = true)
     fun onPlayerSetSpawn(event: PlayerSetSpawnEvent) {
-        if (event.cause == PlayerSetSpawnEvent.Cause.BED || event.cause == PlayerSetSpawnEvent.Cause.RESPAWN_ANCHOR)
+        if (event.cause != PlayerSetSpawnEvent.Cause.BED && event.cause != PlayerSetSpawnEvent.Cause.RESPAWN_ANCHOR)
+
+        if (GameManager.isInGame(event.player))
             event.isCancelled = true
     }
 
